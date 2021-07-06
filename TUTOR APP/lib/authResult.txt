@@ -1,0 +1,33 @@
+authResult: 
+UserCredential(
+    additionalUserInfo: AdditionalUserInfo(
+        isNewUser: false, profile: {
+            given_name: Handsome, 
+            locale: en-GB, family_name: Rob, 
+            picture: https://lh3.googleusercontent.com/a/AATXAJwqnC2tmO8NdrF8GA39t07bgbSgrAxDQdPzRfqY=s96-c, 
+            aud: 959020091387-2js0i7fc71lvb973d0necj36efsqc8jp.apps.googleusercontent.com, 
+            azp: 959020091387-lspf4t2vhb7fn7muuik4kida7m7d08f0.apps.googleusercontent.com, 
+            exp: 1625555286, iat: 1625551686, iss: https://accounts.google.com, 
+            sub: 100505821934825232592, 
+            name: Handsome Rob, 
+            email: hihandsomerob@gmail.com, 
+            email_verified: true
+            },
+        providerId: google.com, 
+        username: null
+        ), 
+    credential: AuthCredential(
+        providerId: google.com, 
+        signInMethod: google.com, 
+        token: null), 
+    user: User(
+            displayName: Handsome Rob, 
+            email: hihandsomerob@gmail.com, 
+            emailVerified: true, 
+            isAnonymous: false, 
+            metadata: UserMetadata(
+                creationTime: 2021-07-06 02:24:29.503, 
+                lastSignInTime: 2021-07-06 11:58:41.236
+                ), 
+            phoneNumber: null, 
+            photoURL: https://lh3.googleusercontent.com/a/AATXAJwqnC2tmO8NdrF8GA39t07bgbSgrAxD
