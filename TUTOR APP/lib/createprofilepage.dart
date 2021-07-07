@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:student/studentfirstpage.dart';
+import 'package:student/teacherfirstpage.dart';
 import 'homepage.dart';
+import 'package:move_to_background/move_to_background.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 class CreateProfilePage extends StatefulWidget {
   const CreateProfilePage({Key? key}) : super(key: key);
@@ -11,62 +15,115 @@ class CreateProfilePage extends StatefulWidget {
 var user;
 
 class _CreateProfilePageState extends State<CreateProfilePage> {
+  void initState() {
+    super.initState();
+    BackButtonInterceptor.add(myInterceptor);
+  }
+
+  // @override
+  // void dispose() {
+  //   BackButtonInterceptor.remove(myInterceptor);
+  //   super.dispose();
+  // }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    MoveToBackground.moveTaskToBack();
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "CREATE PROFILE",
-          textAlign: TextAlign.center,
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width / 1.3,
-              child: MaterialButton(
-                onPressed: () {
-                  user = "Teacher";
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomePage()));
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(30),
-                  child: Text(
-                    "I AM A TEACHER",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+    return Theme(
+        data: ThemeData(
+            primaryColor: Colors.blue,
+            backgroundColor: Colors.lightBlueAccent,
+            buttonTheme: ButtonThemeData(
+                buttonColor: Colors.blue[400],
+                textTheme: ButtonTextTheme.primary)),
+        child: Builder(builder: (context) {
+          return Scaffold(
+            backgroundColor: Colors.blue[50],
+            appBar: AppBar(
+              title: Text(
+                "CREATE PROFILE",
+                textAlign: TextAlign.center,
+              ),
+            ),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/tutorhub_logo.PNG'),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(20.0),
+                    alignment: Alignment.center,
                   ),
-                ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 1.3,
+                    child: MaterialButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                      elevation: 10,
+                      color: Colors.blue,
+                      onPressed: () {
+                        user = "Teacher";
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TeacherFirstPage()));
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(30),
+                        child: Text(
+                          "I AM A TEACHER",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    ),
+                    // decoration: BoxDecoration(
+                    //   borderRadius: BorderRadius.circular(30),
+                    // ),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 1.3,
+                    child: MaterialButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                      elevation: 10,
+                      color: Colors.blue,
+                      onPressed: () {
+                        user = "Student";
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StudentFirstPage()));
+                      },
+                      child: Padding(
+                          padding: EdgeInsets.all(30),
+                          child: Text(
+                            "I AM A STUDENT",
+                            style: TextStyle(fontSize: 20),
+                          )),
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ],
               ),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.indigo[900]),
             ),
-            SizedBox(height: 20),
-            Container(
-              width: MediaQuery.of(context).size.width / 1.3,
-              child: MaterialButton(
-                onPressed: () {
-                  user = "Student";
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomePage()));
-                },
-                child: Padding(
-                    padding: EdgeInsets.all(30),
-                    child: Text(
-                      "I AM A STUDENT",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    )),
-              ),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.indigo[900]),
-            ),
-          ],
-        ),
-      ),
-    );
+          );
+        }));
   }
 }

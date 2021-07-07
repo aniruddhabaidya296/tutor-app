@@ -4,9 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'package:student/createprofilepage.dart';
 import 'package:student/homepage.dart';
 import 'package:student/prothomPage.dart';
-import 'signup.dart';
+// import 'signup.dart';
 
 Future<UserCredential> signInWithGoogle() async {
   await FirebaseAuth.instance.setPersistence(Persistence.NONE);
@@ -30,9 +31,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: Colors.indigo[900]),
+      theme: ThemeData(
+          primaryColor: Colors.blue[900],
+          backgroundColor: Colors.lightBlueAccent,
+          buttonTheme: ButtonThemeData(
+              buttonColor: Colors.blue[400],
+              textTheme: ButtonTextTheme.primary)),
       title: 'TUTOR HUB',
       home: IntroScreen(),
+      routes: {
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        '/home': (context) => HomePage(),
+        '/createprofile': (context) => CreateProfilePage(),
+      },
     );
   }
 }

@@ -1,17 +1,11 @@
 // @dart=2.12
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:flutter/services.dart';
-import 'package:student/createprofilepage.dart';
 import 'emaillogin.dart';
 import 'emailsignup.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'googlesignin.dart';
-import 'homepage.dart';
 
 // googleSignIn googleSignInUser = new googleSignIn();
 
@@ -25,13 +19,13 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
-      'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
-      // 'https://www.googleapis.com/auth/cloud-platform'
-    ],
-  );
+  // GoogleSignIn _googleSignIn = GoogleSignIn(
+  //   scopes: [
+  //     'email',
+  //     'https://www.googleapis.com/auth/contacts.readonly',
+  //     // 'https://www.googleapis.com/auth/cloud-platform'
+  //   ],
+  // );
 
   // GlobalKey<FormState> _userLoginFormKey = GlobalKey();
   // DatabaseReference dbRef =

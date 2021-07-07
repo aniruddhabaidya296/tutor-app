@@ -1,5 +1,6 @@
 // @dart=2.12
 import 'dart:convert';
+// import 'dart:js';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -7,9 +8,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:student/createprofilepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:student/googlesignin.dart';
+// import 'package:student/googlesignin.dart';
 import 'package:student/homepage.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 // import 'package:uuid/uuid.dart';
 import 'emaillogin.dart';
 import 'emailsignup.dart';
@@ -139,78 +140,101 @@ class _ProthomPageState extends State<ProthomPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Sign Up"),
-      ),
-      body: Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text("WELCOME",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                        fontFamily: 'Roboto')),
+    return Theme(
+        data: ThemeData(
+            primaryColor: Colors.blue,
+            backgroundColor: Colors.lightBlueAccent,
+            buttonTheme: ButtonThemeData(
+                buttonColor: Colors.blue[400],
+                textTheme: ButtonTextTheme.primary)),
+        child: Builder(builder: (context) {
+          return Scaffold(
+              appBar: AppBar(
+                title: Text("Sign Up"),
               ),
-              Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: SignInButton(
-                    Buttons.Email,
-                    text: "Sign in with Email",
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => EmailLogIn()),
-                      );
-                    },
-                  )),
-              Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: SignInButton(
-                    Buttons.Google,
-                    text: "Sign In with Google",
-                    onPressed: () {
-                      handleSignIn();
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => googleSignIn()));
-                      // googleSignIn();
-                      // googleSignInUser.handleSignIn();
-                      // debugPrint("Now adding data to firebase");
-                      // signInWithGoogle();
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                          ModalRoute.withName('/home'));
-                    },
-                  )),
-              // Padding(
-              //     padding: EdgeInsets.all(10.0),
-              //     child: SignInButton(
-              //       Buttons.Twitter,
-              //       text: "Sign up with Twitter",
-              //       onPressed: () {},
-              //     )),
-              Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: GestureDetector(
-                      child: Text("Sign Up Using Email",
-                          style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Colors.blue)),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EmailSignUp()),
-                        );
-                      }))
-            ]),
-      ),
-    );
+              body: Center(
+                child: Container(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        // Padding(
+                        //   padding: EdgeInsets.all(10.0),
+                        //   child: Text("WELCOME",
+                        //       style: TextStyle(
+                        //           fontWeight: FontWeight.bold,
+                        //           fontSize: 30,
+                        //           fontFamily: 'Roboto')),
+                        // ),
+                        Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: SignInButton(
+                              Buttons.Email,
+                              text: "Sign in with Email",
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EmailLogIn()),
+                                );
+                              },
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              padding: EdgeInsets.only(left: 50),
+                              elevation: 10,
+                            )),
+                        Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: SignInButton(
+                              Buttons.Google,
+                              text: "Sign In with Google",
+                              onPressed: () {
+                                handleSignIn();
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => googleSignIn()));
+                                // googleSignIn();
+                                // googleSignInUser.handleSignIn();
+                                // debugPrint("Now adding data to firebase");
+                                // signInWithGoogle();
+
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage()),
+                                    ModalRoute.withName('/home'));
+                              },
+                              padding: EdgeInsets.only(left: 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              elevation: 10,
+                            )),
+                        // Padding(
+                        //     padding: EdgeInsets.all(10.0),
+                        //     child: SignInButton(
+                        //       Buttons.Twitter,
+                        //       text: "Sign up with Twitter",
+                        //       onPressed: () {},
+                        //     )),
+                        Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: GestureDetector(
+                                child: Text("Sign Up",
+                                    style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: Colors.blue)),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EmailSignUp()),
+                                  );
+                                }))
+                      ]),
+                ),
+              ));
+        }));
   }
 }
