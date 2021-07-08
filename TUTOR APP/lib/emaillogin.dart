@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:student/prothomPage.dart';
+import 'package:tutorapp/prothomPage.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'prothomPage.dart';
 import 'homepage.dart';
@@ -18,6 +18,29 @@ class _EmailLogInState extends State<EmailLogIn> {
   final TextEditingController _passwordController = TextEditingController();
   var _success;
   String? _userEmail;
+  void _showDialog(String textField) {
+    // flutter defined function
+    print("_showDialog called");
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Error"),
+          content: new Text("$textField"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new ElevatedButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _signInWithEmailAndPassword() async {
     FirebaseAuth _auth = FirebaseAuth.instance;
@@ -38,17 +61,9 @@ class _EmailLogInState extends State<EmailLogIn> {
             ModalRoute.withName('/home'));
       });
     } else {
+      _showDialog("Email not registered");
       setState(() {
         _success = false;
-        Text("Email not registered.");
-        TextButton(
-            child: Text("Sign Up?"),
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProthomPage()),
-                  ModalRoute.withName('/'));
-            });
       });
     }
   }
@@ -99,9 +114,8 @@ class _EmailLogInState extends State<EmailLogIn> {
                         decoration: const InputDecoration(labelText: 'Email'),
                         validator: (String? value) {
                           if (value == Null) {
-                            return 'Please enter some text';
+                            _showDialog('Please enter some text');
                           }
-                          return null;
                         },
                       ),
                     ),
@@ -112,10 +126,9 @@ class _EmailLogInState extends State<EmailLogIn> {
                         decoration:
                             const InputDecoration(labelText: 'Password'),
                         validator: (String? value) {
-                          if (value == Null) {
-                            return 'Please enter some text';
+                          if (value == '') {
+                            _showDialog('Please enter some text');
                           }
-                          return null;
                         },
                       ),
                     ),
@@ -131,26 +144,31 @@ class _EmailLogInState extends State<EmailLogIn> {
                         onPressed: () async {
                           {
                             _signInWithEmailAndPassword();
+                            _showDialog("Wrong Input");
                           }
                         },
                         child: Text(
                           'Submit',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'VisbyRoundCF',
+                          ),
                         ),
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        _success == null
-                            ? ''
-                            : (_success
-                                ? 'Successfully signed in ' + _userEmail!
-                                : 'Sign in failed'),
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    )
+
+                    // Container(
+                    //   alignment: Alignment.center,
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                    //   child: Text(
+                    //     _success == null
+                    //         ? ''
+                    //         : (_success
+                    //             ? ''
+                    //             : 'Sign in failed'),
+                    //     style: TextStyle(color: Colors.red),
+                    //   ),
+                    // )
                   ],
                 ),
               ),

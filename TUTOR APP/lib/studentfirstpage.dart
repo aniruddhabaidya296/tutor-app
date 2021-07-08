@@ -69,6 +69,7 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
   Widget build(BuildContext context) {
     return Theme(
         data: ThemeData(
+            fontFamily: 'VisbyRoundCF',
             dialogBackgroundColor: Colors.blue[100],
             primaryColor: Colors.blue,
             backgroundColor: Colors.lightBlueAccent,
@@ -86,20 +87,24 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text('WELCOME',
-                      style: TextStyle(fontSize: 30, fontFamily: "Verdana")),
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'VisbyRoundCF',
+                          fontWeight: FontWeight.bold)),
                   Padding(
                       padding: EdgeInsets.only(left: 50, right: 50, bottom: 10),
                       child: TextFormField(
                         controller: _nameController,
                         cursorColor: Colors.black,
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
+                        style:
+                            TextStyle(fontSize: 20, fontFamily: 'VisbyRoundCF'),
                         decoration: InputDecoration(
                             // hintText: "Name",
                             alignLabelWithHint: true,
                             labelText: "Name",
-                            hintStyle: TextStyle(color: Colors.black38),
+                            hintStyle: TextStyle(
+                                color: Colors.black38,
+                                fontFamily: 'VisbyRoundCF'),
                             border: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.black),
                               // borderRadius: BorderRadius.circular(20),
@@ -111,12 +116,13 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
                       child: TextFormField(
                         controller: _schoolController,
                         cursorColor: Colors.black,
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
+                        style:
+                            TextStyle(fontSize: 20, fontFamily: 'VisbyRoundCF'),
                         decoration: InputDecoration(
                             labelText: "School",
-                            hintStyle: TextStyle(color: Colors.black38),
+                            hintStyle: TextStyle(
+                                color: Colors.black38,
+                                fontFamily: 'VisbyRoundCF'),
                             border: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.black),
                             )),
@@ -127,11 +133,14 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
                         controller: _boardController,
                         cursorColor: Colors.black,
                         style: TextStyle(
+                          fontFamily: 'VisbyRoundCF',
                           fontSize: 20,
                         ),
                         decoration: InputDecoration(
                             labelText: "Board",
-                            hintStyle: TextStyle(color: Colors.black38),
+                            hintStyle: TextStyle(
+                                color: Colors.black38,
+                                fontFamily: 'VisbyRoundCF'),
                             border: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.black),
                             )),
@@ -141,13 +150,14 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
                       child: TextField(
                         controller: _classController,
                         cursorColor: Colors.black,
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
+                        style:
+                            TextStyle(fontSize: 20, fontFamily: 'VisbyRoundCF'),
 
                         decoration: InputDecoration(
                             labelText: "Class",
-                            hintStyle: TextStyle(color: Colors.black38),
+                            hintStyle: TextStyle(
+                                color: Colors.black38,
+                                fontFamily: 'VisbyRoundCF'),
                             border: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.black),
                             )),
@@ -168,11 +178,11 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
                               double.parse(_classController.text));
                           _callCreateStudentApi(temp_student);
 
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => HomePage()),
-                            ModalRoute.withName('/home'),
-                          );
+                          // Navigator.pushAndRemoveUntil(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) => HomePage()),
+                          //   ModalRoute.withName('/home'),
+                          // );
                         },
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
@@ -180,7 +190,11 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
                         color: Colors.blue,
                         child: Text(
                           "Save",
-                          style: TextStyle(fontSize: 20, color: Colors.white),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontFamily: 'VisbyRoundCF',
+                              fontWeight: FontWeight.bold),
                         )),
                   ),
                 ],

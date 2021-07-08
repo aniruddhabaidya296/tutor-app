@@ -47,9 +47,9 @@ class _SignUpState extends State<SignUp> {
                 padding: EdgeInsets.all(10.0),
                 child: Text("WELCOME",
                     style: TextStyle(
+                        fontFamily: 'VisbyRoundCF',
                         fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                        fontFamily: 'Roboto')),
+                        fontSize: 30)),
               ),
               Padding(
                   padding: EdgeInsets.all(10.0),
@@ -95,6 +95,8 @@ class _SignUpState extends State<SignUp> {
                   child: GestureDetector(
                       child: Text("Log In Using Email",
                           style: TextStyle(
+                              fontFamily: 'VisbyRoundCF',
+                              fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,
                               color: Colors.blue)),
                       onTap: () {

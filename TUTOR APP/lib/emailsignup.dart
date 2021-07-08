@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:student/homepage.dart';
+import 'package:tutorapp/homepage.dart';
 
 class EmailSignUp extends StatefulWidget {
   const EmailSignUp({Key? key}) : super(key: key);
@@ -9,6 +9,8 @@ class EmailSignUp extends StatefulWidget {
   @override
   _EmailSignUpState createState() => _EmailSignUpState();
 }
+
+var GlobalNameOfUser;
 
 class _EmailSignUpState extends State<EmailSignUp> {
   void registerToFb() {
@@ -73,6 +75,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
                 padding:
                     EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
                 child: TextFormField(
+                  autofocus: true,
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: "Enter Email",
@@ -81,7 +84,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
                         borderSide: BorderSide(color: Colors.black38)),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50.0),
-                        borderSide: const BorderSide(color: Colors.black38)),
+                        borderSide: const BorderSide(color: Colors.black)),
                   ),
                   // The validator receives the text that the user has entered.
                   validator: (value) {
@@ -96,12 +99,13 @@ class _EmailSignUpState extends State<EmailSignUp> {
                 padding:
                     EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
                 child: TextFormField(
+                  autofocus: true,
                   controller: nameController,
                   decoration: InputDecoration(
                     labelText: "Enter User Name",
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50.0),
-                        borderSide: const BorderSide(color: Colors.black38)),
+                        borderSide: const BorderSide(color: Colors.black)),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50.0),
                         borderSide: const BorderSide(color: Colors.black38)),
@@ -120,6 +124,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
                     EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
                 child: TextFormField(
                   controller: passwordController,
+                  autofocus: true,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Enter Password",
@@ -128,7 +133,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
                         borderSide: BorderSide(color: Colors.black38)),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50.0),
-                        borderSide: const BorderSide(color: Colors.black38)),
+                        borderSide: const BorderSide(color: Colors.black)),
                   ),
                   // The validator receives the text that the user has entered.
                   validator: (value) {
@@ -143,8 +148,8 @@ class _EmailSignUpState extends State<EmailSignUp> {
                 padding:
                     EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
                 child: TextFormField(
+                  autofocus: true,
                   controller: ageController,
-                  obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Enter Age",
                     enabledBorder: OutlineInputBorder(
@@ -152,7 +157,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
                         borderSide: BorderSide(color: Colors.black38)),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50.0),
-                        borderSide: const BorderSide(color: Colors.black38)),
+                        borderSide: const BorderSide(color: Colors.black)),
                   ),
                   // The validator receives the text that the user has entered.
                   validator: (value) {

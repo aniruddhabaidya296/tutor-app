@@ -105,8 +105,10 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                       padding: EdgeInsets.only(
                           left: 50, right: 50, bottom: 10, top: 50),
                       child: Text('WELCOME',
-                          style:
-                              TextStyle(fontSize: 30, fontFamily: "Verdana")),
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontFamily: 'VisbyRoundCF',
+                              fontWeight: FontWeight.bold)),
                     ),
                     Padding(
                         padding:
@@ -121,7 +123,9 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                               // hintText: "Name",
                               alignLabelWithHint: true,
                               labelText: "Name",
-                              hintStyle: TextStyle(color: Colors.black38),
+                              hintStyle: TextStyle(
+                                  color: Colors.black38,
+                                  fontFamily: 'VisbyRoundCF'),
                               border: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                                 // borderRadius: BorderRadius.circular(20),
@@ -135,11 +139,14 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                           controller: _schoolNameController,
                           cursorColor: Colors.black,
                           style: TextStyle(
+                            fontFamily: 'VisbyRoundCF',
                             fontSize: 20,
                           ),
                           decoration: InputDecoration(
                               labelText: "School or Institution (if any):",
-                              hintStyle: TextStyle(color: Colors.black38),
+                              hintStyle: TextStyle(
+                                  fontFamily: 'VisbyRoundCF',
+                                  color: Colors.black38),
                               border: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               )),
@@ -151,11 +158,14 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                             controller: _experienceController,
                             cursorColor: Colors.black,
                             style: TextStyle(
+                              fontFamily: 'VisbyRoundCF',
                               fontSize: 20,
                             ),
                             decoration: InputDecoration(
                                 labelText: "Experience(in years)",
-                                hintStyle: TextStyle(color: Colors.black38),
+                                hintStyle: TextStyle(
+                                    fontFamily: 'VisbyRoundCF',
+                                    color: Colors.black38),
                                 border: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 )),
@@ -170,11 +180,14 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                           controller: _subjectController,
                           cursorColor: Colors.black,
                           style: TextStyle(
+                            fontFamily: 'VisbyRoundCF',
                             fontSize: 20,
                           ),
                           decoration: InputDecoration(
                               labelText: "Subject(s)",
-                              hintStyle: TextStyle(color: Colors.black38),
+                              hintStyle: TextStyle(
+                                  fontFamily: 'VisbyRoundCF',
+                                  color: Colors.black38),
                               border: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               )),
@@ -186,11 +199,14 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                           controller: _boardController,
                           cursorColor: Colors.black,
                           style: TextStyle(
+                            fontFamily: 'VisbyRoundCF',
                             fontSize: 20,
                           ),
                           decoration: InputDecoration(
                               labelText: "Board(s)",
-                              hintStyle: TextStyle(color: Colors.black38),
+                              hintStyle: TextStyle(
+                                  fontFamily: 'VisbyRoundCF',
+                                  color: Colors.black38),
                               border: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               )),
@@ -202,11 +218,14 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                           controller: _classController,
                           cursorColor: Colors.black,
                           style: TextStyle(
+                            fontFamily: 'VisbyRoundCF',
                             fontSize: 20,
                           ),
                           decoration: InputDecoration(
                               labelText: "Classes (e.g. 9 to 12)",
-                              hintStyle: TextStyle(color: Colors.black38),
+                              hintStyle: TextStyle(
+                                  fontFamily: 'VisbyRoundCF',
+                                  color: Colors.black38),
                               border: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               )),
@@ -220,6 +239,7 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                               title: const Text(
                                 'Online',
                                 style: TextStyle(
+                                  fontFamily: 'VisbyRoundCF',
                                   fontSize: 20,
                                 ),
                               ),
@@ -237,6 +257,7 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                               title: const Text(
                                 'Offline',
                                 style: TextStyle(
+                                  fontFamily: 'VisbyRoundCF',
                                   fontSize: 20,
                                 ),
                               ),
@@ -254,6 +275,7 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                               title: const Text(
                                 'Both',
                                 style: TextStyle(
+                                  fontFamily: 'VisbyRoundCF',
                                   fontSize: 20,
                                 ),
                               ),
@@ -296,7 +318,11 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                           },
                           child: Text(
                             "Save",
-                            style: TextStyle(fontSize: 20, color: Colors.white),
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontFamily: 'VisbyRoundCF',
+                                fontWeight: FontWeight.bold),
                           )),
                     )
                   ],

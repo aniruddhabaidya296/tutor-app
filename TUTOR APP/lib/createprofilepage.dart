@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:student/studentfirstpage.dart';
-import 'package:student/teacherfirstpage.dart';
+import 'package:tutorapp/studentfirstpage.dart';
+import 'package:tutorapp/teacherfirstpage.dart';
 import 'homepage.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
@@ -72,7 +72,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ),
-                      elevation: 10,
+                      elevation: 5,
                       color: Colors.blue,
                       onPressed: () {
                         user = "Teacher";
@@ -85,7 +85,10 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                         padding: EdgeInsets.all(30),
                         child: Text(
                           "I AM A TEACHER",
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'VisbyRoundCF',
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -100,7 +103,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ),
-                      elevation: 10,
+                      elevation: 5,
                       color: Colors.blue,
                       onPressed: () {
                         user = "Student";
@@ -113,7 +116,10 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                           padding: EdgeInsets.all(30),
                           child: Text(
                             "I AM A STUDENT",
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'VisbyRoundCF',
+                                fontWeight: FontWeight.bold),
                           )),
                     ),
                     decoration: BoxDecoration(

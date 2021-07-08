@@ -5,8 +5,8 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:student/createprofilepage.dart';
-import 'package:student/prothomPage.dart';
+import 'package:tutorapp/createprofilepage.dart';
+import 'package:tutorapp/prothomPage.dart';
 // import 'package:student/signup.dart';
 // import 'googlesignin.dart';
 
@@ -57,7 +57,6 @@ class _HomePageState extends State<HomePage> {
             appBar: AppBar(
               actions: <Widget>[
                 Builder(builder: (BuildContext context) {
-//5
                   return TextButton(
                     child: Icon(
                       Icons.logout,
@@ -140,21 +139,6 @@ class _HomePageState extends State<HomePage> {
                                   ],
                                 ),
                               ));
-                      //************************************************* */
-                      // final User? user = await _auth.currentUser;
-                      // if (user != null) {
-                      //   googleHomePageUserSignIn.signOut();
-                      //   await _auth.signOut();
-                      //   final String? email = user.email;
-                      //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      //     content: Text(email! + ' has successfully signed out.'),
-                      //   ));
-                      //   Navigator.pushAndRemoveUntil(
-                      //       context,
-                      //       MaterialPageRoute(builder: (context) => ProthomPage()),
-                      //       ModalRoute.withName('/'));
-                      // }
-                      //*************************************************** */
                     },
                   );
                 })
@@ -181,6 +165,8 @@ class _HomePageState extends State<HomePage> {
                 child: TextFormField(
                   cursorColor: Colors.black,
                   style: TextStyle(
+                    fontFamily: 'VisbyRoundCF',
+                    fontWeight: FontWeight.bold,
                     fontSize: 15,
                   ),
                   decoration: InputDecoration(
@@ -192,7 +178,10 @@ class _HomePageState extends State<HomePage> {
                     suffixIcon: Icon(
                       Icons.search,
                     ),
-                    hintStyle: TextStyle(color: Colors.black38),
+                    hintStyle: TextStyle(
+                      color: Colors.black38,
+                      fontFamily: 'VisbyRoundCF',
+                    ),
                   ),
                 ),
               ),
@@ -210,7 +199,10 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             "Complete my profile",
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'VisbyRoundCF',
+                                fontWeight: FontWeight.bold),
                           ),
                           SizedBox(width: 30),
                           ElevatedButton(

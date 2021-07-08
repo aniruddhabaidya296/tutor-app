@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("ENTER DETAILS",
-                style: TextStyle(fontSize: 30, fontFamily: "Verdana")),
+                style: TextStyle(fontSize: 30, fontFamily: "VisbyRoundCF")),
             Padding(
               padding: EdgeInsets.only(left: 50.0, right: 50.0, top: 10.0),
               child: TextFormField(
@@ -68,7 +68,11 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: Text(
                     "Login",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontFamily: 'VisbyRoundCF',
+                        fontWeight: FontWeight.bold),
                   )),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),

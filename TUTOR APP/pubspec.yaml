@@ -1,4 +1,4 @@
-name: student
+name: tutorapp
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -46,6 +46,18 @@ dev_dependencies:
   # flutter_native_splash: ^1.2.0
 
 flutter:
+  fonts:
+    - family: VisbyRoundCF
+      fonts:
+        - asset: assets/fonts/VisbyRoundCF-Bold.otf
+        - asset: assets/fonts/VisbyRoundCF-DemiBold.otf
+        - asset: assets/fonts/VisbyRoundCF-ExtraBold.otf
+        - asset: assets/fonts/VisbyRoundCF-ExtraLight.otf
+        - asset: assets/fonts/VisbyRoundCF-Heavy.otf
+        - asset: assets/fonts/VisbyRoundCF-Light.otf  
+        - asset: assets/fonts/VisbyRoundCF-Medium.otf
+        - asset: assets/fonts/VisbyRoundCF-Regular.otf
+        
   uses-material-design: true
   assets:
     - assets/tutorhub_logo.PNG

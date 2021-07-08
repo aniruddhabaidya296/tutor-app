@@ -9,7 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 // import 'package:student/googlesignin.dart';
-import 'package:student/homepage.dart';
+import 'package:tutorapp/homepage.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:uuid/uuid.dart';
 import 'emaillogin.dart';
@@ -142,6 +142,7 @@ class _ProthomPageState extends State<ProthomPage> {
   Widget build(BuildContext context) {
     return Theme(
         data: ThemeData(
+            fontFamily: 'VisbyRoundCF',
             primaryColor: Colors.blue,
             backgroundColor: Colors.lightBlueAccent,
             buttonTheme: ButtonThemeData(
@@ -149,6 +150,7 @@ class _ProthomPageState extends State<ProthomPage> {
                 textTheme: ButtonTextTheme.primary)),
         child: Builder(builder: (context) {
           return Scaffold(
+              backgroundColor: Colors.blue[100],
               appBar: AppBar(
                 title: Text("Sign Up"),
               ),
@@ -190,15 +192,6 @@ class _ProthomPageState extends State<ProthomPage> {
                               text: "Sign In with Google",
                               onPressed: () {
                                 handleSignIn();
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => googleSignIn()));
-                                // googleSignIn();
-                                // googleSignInUser.handleSignIn();
-                                // debugPrint("Now adding data to firebase");
-                                // signInWithGoogle();
-
                                 Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
@@ -211,18 +204,13 @@ class _ProthomPageState extends State<ProthomPage> {
                               ),
                               elevation: 10,
                             )),
-                        // Padding(
-                        //     padding: EdgeInsets.all(10.0),
-                        //     child: SignInButton(
-                        //       Buttons.Twitter,
-                        //       text: "Sign up with Twitter",
-                        //       onPressed: () {},
-                        //     )),
                         Padding(
                             padding: EdgeInsets.all(10.0),
                             child: GestureDetector(
                                 child: Text("Sign Up",
                                     style: TextStyle(
+                                        fontFamily: 'VisbyRoundCF',
+                                        fontWeight: FontWeight.bold,
                                         decoration: TextDecoration.underline,
                                         color: Colors.blue)),
                                 onTap: () {
