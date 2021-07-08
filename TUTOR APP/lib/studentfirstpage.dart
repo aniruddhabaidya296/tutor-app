@@ -67,15 +67,8 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-        data: ThemeData(
-            fontFamily: 'VisbyRoundCF',
-            dialogBackgroundColor: Colors.blue[100],
-            primaryColor: Colors.blue,
-            backgroundColor: Colors.lightBlueAccent,
-            buttonTheme: ButtonThemeData(
-                buttonColor: Colors.blue[400],
-                textTheme: ButtonTextTheme.primary)),
+    return GestureDetector(
+        onTap: () {},
         child: Builder(builder: (context) {
           return Scaffold(
             backgroundColor: Colors.blue[50],

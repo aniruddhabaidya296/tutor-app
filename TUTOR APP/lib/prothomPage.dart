@@ -214,155 +214,149 @@ class _ProthomPageState extends State<ProthomPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-        data: ThemeData(
-            fontFamily: 'VisbyRoundCF',
-            primaryColor: Colors.blue,
-            backgroundColor: Colors.lightBlueAccent,
-            buttonTheme: ButtonThemeData(
-                buttonColor: Colors.blue[400],
-                textTheme: ButtonTextTheme.primary)),
-        child: Builder(builder: (context) {
-          return Scaffold(
-              backgroundColor: Colors.blue[100],
-              appBar: AppBar(
-                title: Text("Sign Up"),
-              ),
-              body: Center(
-                child: Container(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: SignInButton(
-                              Buttons.Email,
-                              text: "Sign in with Email",
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => EmailLogIn()),
-                                );
-                              },
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              padding: EdgeInsets.only(left: 50),
-                              elevation: 10,
-                            )),
-                        Padding(
-                            padding: EdgeInsets.only(
-                                left: 10, right: 10, bottom: 10),
-                            child: SignInButton(
-                              Buttons.Google,
-                              text: "Sign In with Google",
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (ctx) => new Container(
-                                          child: new Stack(
-                                            children: <Widget>[
-                                              new Container(
-                                                alignment:
-                                                    AlignmentDirectional.center,
-                                                decoration: new BoxDecoration(
-                                                  color: Colors.white70,
-                                                ),
-                                                child: new Container(
-                                                  decoration: new BoxDecoration(
-                                                      color: Colors.blue[200],
-                                                      borderRadius:
-                                                          new BorderRadius
-                                                              .circular(10.0)),
-                                                  width: 300.0,
-                                                  height: 200.0,
-                                                  alignment:
-                                                      AlignmentDirectional
-                                                          .center,
-                                                  child: new Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      new Center(
-                                                        child: new SizedBox(
-                                                          height: 50.0,
-                                                          width: 50.0,
-                                                          child:
-                                                              new CircularProgressIndicator(
-                                                            value: null,
-                                                            strokeWidth: 7.0,
-                                                          ),
-                                                        ),
+    return GestureDetector(onTap: () {
+      FocusScopeNode currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
+      }
+    }, child: Builder(builder: (context) {
+      return Scaffold(
+          backgroundColor: Colors.blue[100],
+          appBar: AppBar(
+            title: Text("Sign Up"),
+          ),
+          body: Center(
+            child: Container(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: SignInButton(
+                          Buttons.Email,
+                          text: "Sign in with Email",
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EmailLogIn()),
+                            );
+                          },
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          padding: EdgeInsets.only(left: 50),
+                          elevation: 10,
+                        )),
+                    Padding(
+                        padding:
+                            EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                        child: SignInButton(
+                          Buttons.Google,
+                          text: "Sign In with Google",
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (ctx) => new Container(
+                                      child: new Stack(
+                                        children: <Widget>[
+                                          new Container(
+                                            alignment:
+                                                AlignmentDirectional.center,
+                                            decoration: new BoxDecoration(
+                                              color: Colors.white70,
+                                            ),
+                                            child: new Container(
+                                              decoration: new BoxDecoration(
+                                                  color: Colors.blue[200],
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          10.0)),
+                                              width: 300.0,
+                                              height: 200.0,
+                                              alignment:
+                                                  AlignmentDirectional.center,
+                                              child: new Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: <Widget>[
+                                                  new Center(
+                                                    child: new SizedBox(
+                                                      height: 50.0,
+                                                      width: 50.0,
+                                                      child:
+                                                          new CircularProgressIndicator(
+                                                        value: null,
+                                                        strokeWidth: 7.0,
                                                       ),
-                                                      new SizedBox(
-                                                        child: Center(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    top: 15),
-                                                            child: Text(
-                                                              "Loading",
-                                                              style: new TextStyle(
-                                                                  decoration:
-                                                                      TextDecoration
-                                                                          .none,
-                                                                  fontFamily:
-                                                                      "VisbyRoundCF",
-                                                                  fontSize: 16,
-                                                                  color: Colors
-                                                                      .white),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
+                                                    ),
                                                   ),
-                                                ),
+                                                  new SizedBox(
+                                                    child: Center(
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 15),
+                                                        child: Text(
+                                                          "Loading",
+                                                          style: new TextStyle(
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .none,
+                                                              fontFamily:
+                                                                  "VisbyRoundCF",
+                                                              fontSize: 16,
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                            ),
                                           ),
-                                        ));
-                                handleSignIn();
+                                        ],
+                                      ),
+                                    ));
+                            handleSignIn();
 
-                                // onLoading();
-                                // handleLoading();
+                            // onLoading();
+                            // handleLoading();
 
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => HomePage()));
-                                // login();
-                              },
-                              padding: EdgeInsets.only(left: 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              elevation: 10,
-                            )),
-                        Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: GestureDetector(
-                                child: Text("Sign Up",
-                                    style: TextStyle(
-                                        fontFamily: 'VisbyRoundCF',
-                                        fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration.underline,
-                                        color: Colors.blue)),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => EmailSignUp()),
-                                  );
-                                }))
-                      ]),
-                ),
-              ));
-        }));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => HomePage()));
+                            // login();
+                          },
+                          padding: EdgeInsets.only(left: 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          elevation: 10,
+                        )),
+                    Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: GestureDetector(
+                            child: Text("Sign Up",
+                                style: TextStyle(
+                                    fontFamily: 'VisbyRoundCF',
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
+                                    color: Colors.blue)),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EmailSignUp()),
+                              );
+                            }))
+                  ]),
+            ),
+          ));
+    }));
   }
 }

@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:tutorapp/homepage.dart';
+import 'main.dart';
 
 class EmailSignUp extends StatefulWidget {
   const EmailSignUp({Key? key}) : super(key: key);
@@ -60,131 +63,186 @@ class _EmailSignUpState extends State<EmailSignUp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        key: _formKey,
-        body: Center(
-            child: SingleChildScrollView(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(40),
-                child: Image.asset("assets/tutorhub_logo.PNG"),
-              ),
-              Padding(
-                padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
-                child: TextFormField(
-                  autofocus: true,
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: "Enter Email",
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        borderSide: BorderSide(color: Colors.black38)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        borderSide: const BorderSide(color: Colors.black)),
-                  ),
-                  // The validator receives the text that the user has entered.
-                  validator: (value) {
-                    if (value != null) {
-                      return 'Enter User Email';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
-                child: TextFormField(
-                  autofocus: true,
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    labelText: "Enter User Name",
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        borderSide: const BorderSide(color: Colors.black)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        borderSide: const BorderSide(color: Colors.black38)),
-                  ),
-                  // The validator receives the text that the user has entered.
-                  validator: (value) {
-                    if (value != null) {
-                      return 'Enter User Name';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
-                child: TextFormField(
-                  controller: passwordController,
-                  autofocus: true,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: "Enter Password",
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        borderSide: BorderSide(color: Colors.black38)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        borderSide: const BorderSide(color: Colors.black)),
-                  ),
-                  // The validator receives the text that the user has entered.
-                  validator: (value) {
-                    if (value != null) {
-                      return 'Enter Password';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding:
-                    EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 10),
-                child: TextFormField(
-                  autofocus: true,
-                  controller: ageController,
-                  decoration: InputDecoration(
-                    labelText: "Enter Age",
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        borderSide: BorderSide(color: Colors.black38)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        borderSide: const BorderSide(color: Colors.black)),
-                  ),
-                  // The validator receives the text that the user has entered.
-                  validator: (value) {
-                    if (value != null) {
-                      return 'Enter Age';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.lightBlue)),
-                onPressed: () {
-                  // if (_formKey.currentState != null) {
-                  // if (_formKey.currentState.validate()==true) {
-                  registerToFb();
-                  // Navigator.pushAndRemoveUntil(
-                  //     context,
-                  //     MaterialPageRoute(builder: (context) => HomePage()),
-                  //     ModalRoute.withName('/home'));
-                  // }
-                  // }
-                },
-                child: Text('Submit'),
-              ),
-            ]))));
+    return GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: Scaffold(
+            appBar: AppBar(title: Text("Sign Up")),
+            backgroundColor: Colors.blue[50],
+            key: _formKey,
+            body: Center(
+                child: SingleChildScrollView(
+                    child: Container(
+                        width: MediaQuery.of(context).size.width / 1.2,
+                        height: MediaQuery.of(context).size.height / 1.5,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.blue[100],
+                        ),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.3,
+                                height: MediaQuery.of(context).size.height / 8,
+                                child: Padding(
+                                  padding: EdgeInsets.only(bottom: 30, top: 30),
+                                  child:
+                                      Image.asset("assets/tutorhub_logo.PNG"),
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.3,
+                                height: MediaQuery.of(context).size.height / 12,
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: TextFormField(
+                                    style:
+                                        TextStyle(fontFamily: "VisbyRoundCF"),
+                                    autofocus: true,
+                                    controller: emailController,
+                                    decoration: InputDecoration(
+                                      labelText: "Email",
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18.0),
+                                          borderSide: BorderSide(
+                                              color: Colors.black12)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                          borderSide: const BorderSide(
+                                              color: Colors.black)),
+                                    ),
+                                    // The validator receives the text that the user has entered.
+                                    validator: (value) {
+                                      if (value != null) {
+                                        return 'Enter User Email';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.3,
+                                height: MediaQuery.of(context).size.height / 12,
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: TextFormField(
+                                    style:
+                                        TextStyle(fontFamily: "VisbyRoundCF"),
+                                    autofocus: true,
+                                    controller: nameController,
+                                    decoration: InputDecoration(
+                                      labelText: "Username",
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18.0),
+                                          borderSide: const BorderSide(
+                                              color: Colors.black)),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18.0),
+                                          borderSide: const BorderSide(
+                                              color: Colors.black12)),
+                                    ),
+                                    // The validator receives the text that the user has entered.
+                                    validator: (value) {
+                                      if (value != null) {
+                                        return 'Enter User Name';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.3,
+                                height: MediaQuery.of(context).size.height / 12,
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: TextFormField(
+                                    style:
+                                        TextStyle(fontFamily: "VisbyRoundCF"),
+                                    controller: passwordController,
+                                    autofocus: true,
+                                    obscureText: true,
+                                    decoration: InputDecoration(
+                                      labelText: "Password",
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                          borderSide: BorderSide(
+                                              color: Colors.black12)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                          borderSide: const BorderSide(
+                                              color: Colors.black)),
+                                    ),
+                                    // The validator receives the text that the user has entered.
+                                    validator: (value) {
+                                      if (value != null) {
+                                        return 'Enter Password';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.3,
+                                height: MediaQuery.of(context).size.height / 12,
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: TextFormField(
+                                    style:
+                                        TextStyle(fontFamily: "VisbyRoundCF"),
+                                    autofocus: true,
+                                    controller: ageController,
+                                    decoration: InputDecoration(
+                                      labelText: "Age",
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                          borderSide: BorderSide(
+                                              color: Colors.black12)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                          borderSide: const BorderSide(
+                                              color: Colors.black)),
+                                    ),
+                                    // The validator receives the text that the user has entered.
+                                    validator: (value) {
+                                      if (value != null) {
+                                        return 'Enter Age';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 10, bottom: 25),
+                                child: MaterialButton(
+                                  minWidth:
+                                      MediaQuery.of(context).size.width / 3,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ),
+                                  color: Colors.blue,
+                                  onPressed: () {
+                                    registerToFb();
+                                  },
+                                  child: Text('Submit'),
+                                ),
+                              )
+                            ]))))));
   }
 }

@@ -95,98 +95,120 @@ class _EmailLogInState extends State<EmailLogIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-        data: ThemeData(
-            dialogBackgroundColor: Colors.blue[100],
-            primaryColor: Colors.blue,
-            backgroundColor: Colors.lightBlueAccent,
-            buttonTheme: ButtonThemeData(
-                buttonColor: Colors.blue[400],
-                textTheme: ButtonTextTheme.primary)),
-        child: Builder(builder: (context) {
-          return Scaffold(
-            backgroundColor: Colors.blue[50],
-            appBar: AppBar(
-              title: Text("Email Sign In"),
-            ),
-            key: _formKey,
-            body: Center(
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.blue[100]),
-                width: MediaQuery.of(context).size.width / 1.3,
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 100,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/tutorhub_logo.PNG'),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      padding: const EdgeInsets.all(20.0),
-                      alignment: Alignment.center,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 30, right: 30),
-                      child: TextFormField(
-                        controller: _emailController,
-                        decoration: const InputDecoration(labelText: 'Email'),
-                        validator: (String? value) {
-                          if (value == Null) {
-                            _showDialog('Please enter some text');
-                          }
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 30, right: 30),
-                      child: TextFormField(
-                        obscureText: true,
-                        controller: _passwordController,
-                        decoration:
-                            const InputDecoration(labelText: 'Password'),
-                        validator: (String? value) {
-                          if (_passwordController.text == '') {
-                            _showDialog('Please enter some text');
-                          }
-                        },
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(20.0),
-                      alignment: Alignment.center,
-                      child: MaterialButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        ),
-                        elevation: 10,
-                        color: Colors.blue,
-                        onPressed: () async {
-                          {
-                            _signInWithEmailAndPassword();
-                          }
-                        },
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'VisbyRoundCF',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+    return GestureDetector(onTap: () {
+      FocusScopeNode currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
+      }
+    }, child: Builder(builder: (context) {
+      return Scaffold(
+        backgroundColor: Colors.blue[50],
+        appBar: AppBar(
+          title: Text("Email Sign In"),
+        ),
+        key: _formKey,
+        body: Center(
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.blue[100]),
+            width: MediaQuery.of(context).size.width / 1.3,
+            child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: 100,
                 ),
-              ),
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/tutorhub_logo.PNG'),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(20.0),
+                  alignment: Alignment.center,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.3,
+                  height: MediaQuery.of(context).size.height / 12,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: 30, right: 30, bottom: 10, top: 10),
+                    child: TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              borderSide: BorderSide(color: Colors.black12)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(18),
+                              borderSide:
+                                  const BorderSide(color: Colors.black)),
+                          labelText: 'Email'),
+                      validator: (String? value) {
+                        if (value == Null) {
+                          _showDialog('Please enter some text');
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.3,
+                  height: MediaQuery.of(context).size.height / 12,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: 30, right: 30, top: 10, bottom: 10),
+                    child: TextFormField(
+                      obscureText: true,
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              borderSide: BorderSide(color: Colors.black12)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(18),
+                              borderSide:
+                                  const BorderSide(color: Colors.black)),
+                          labelText: 'Password'),
+                      validator: (String? value) {
+                        if (_passwordController.text == '') {
+                          _showDialog('Please enter some text');
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(20.0),
+                  alignment: Alignment.center,
+                  child: MaterialButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
+                    elevation: 10,
+                    color: Colors.blue,
+                    onPressed: () async {
+                      {
+                        _signInWithEmailAndPassword();
+                      }
+                    },
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'VisbyRoundCF',
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          );
-        }));
+          ),
+        ),
+      );
+    }));
   }
 
   @override
