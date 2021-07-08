@@ -16,6 +16,7 @@ import 'emaillogin.dart';
 import 'emailsignup.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
+bool loading = true;
 DatabaseReference dbRef = FirebaseDatabase.instance.reference().child("Users");
 final FirebaseAuth auth = FirebaseAuth.instance;
 GoogleSignIn googleHomePageUserSignIn = GoogleSignIn(
@@ -94,13 +95,19 @@ class _ProthomPageState extends State<ProthomPage> {
     //Will be using it later. !!!DO NOT DELETE!!!
   }
 
+  handleLoading() async {
+    loading = true;
+  }
+
   void handleSignIn() async {
     try {
+      loading = true;
       await googleHomePageUserSignIn.signIn();
       GoogleSignInAccount googleSignInAccount =
           await googleHomePageUserSignIn.signIn();
       GoogleSignInAuthentication googleSignInAuthentication =
           await googleSignInAccount.authentication;
+      // login();
       OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
@@ -115,7 +122,13 @@ class _ProthomPageState extends State<ProthomPage> {
         "uid": authResult.user!.uid
       });
       uid = authResult.user!.uid;
+      loading = false;
+      loading
+          ? bodyProgress
+          : Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomePage()));
     } catch (error) {
+      loading = false;
       print(error);
     }
   }
@@ -137,6 +150,67 @@ class _ProthomPageState extends State<ProthomPage> {
   ///                                                                       ///
 /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
+  ///
+  var bodyProgress = new Container(
+    child: new Stack(
+      children: <Widget>[
+        new Container(
+          alignment: AlignmentDirectional.center,
+          decoration: new BoxDecoration(
+            color: Colors.white70,
+          ),
+          child: new Container(
+            decoration: new BoxDecoration(
+                color: Colors.blue[200],
+                borderRadius: new BorderRadius.circular(10.0)),
+            width: 300.0,
+            height: 200.0,
+            alignment: AlignmentDirectional.center,
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Center(
+                  child: new SizedBox(
+                    height: 50.0,
+                    width: 50.0,
+                    child: new CircularProgressIndicator(
+                      value: null,
+                      strokeWidth: 7.0,
+                    ),
+                  ),
+                ),
+                new Container(
+                  margin: const EdgeInsets.only(top: 25.0),
+                  child: new Center(
+                    child: new Text(
+                      "loading.. wait...",
+                      style: new TextStyle(
+                          fontFamily: "VisbyRoundCF",
+                          fontSize: 16,
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+
+  // void onLoading() {
+  //   setState(() {
+  //     loading = true;
+  //   });
+  // }
+
+  // void login() async {
+  //   setState(() {
+  //     loading = false;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -159,14 +233,6 @@ class _ProthomPageState extends State<ProthomPage> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        // Padding(
-                        //   padding: EdgeInsets.all(10.0),
-                        //   child: Text("WELCOME",
-                        //       style: TextStyle(
-                        //           fontWeight: FontWeight.bold,
-                        //           fontSize: 30,
-                        //           fontFamily: 'Roboto')),
-                        // ),
                         Padding(
                             padding: EdgeInsets.all(10.0),
                             child: SignInButton(
@@ -186,17 +252,91 @@ class _ProthomPageState extends State<ProthomPage> {
                               elevation: 10,
                             )),
                         Padding(
-                            padding: EdgeInsets.all(10.0),
+                            padding: EdgeInsets.only(
+                                left: 10, right: 10, bottom: 10),
                             child: SignInButton(
                               Buttons.Google,
                               text: "Sign In with Google",
                               onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (ctx) => new Container(
+                                          child: new Stack(
+                                            children: <Widget>[
+                                              new Container(
+                                                alignment:
+                                                    AlignmentDirectional.center,
+                                                decoration: new BoxDecoration(
+                                                  color: Colors.white70,
+                                                ),
+                                                child: new Container(
+                                                  decoration: new BoxDecoration(
+                                                      color: Colors.blue[200],
+                                                      borderRadius:
+                                                          new BorderRadius
+                                                              .circular(10.0)),
+                                                  width: 300.0,
+                                                  height: 200.0,
+                                                  alignment:
+                                                      AlignmentDirectional
+                                                          .center,
+                                                  child: new Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      new Center(
+                                                        child: new SizedBox(
+                                                          height: 50.0,
+                                                          width: 50.0,
+                                                          child:
+                                                              new CircularProgressIndicator(
+                                                            value: null,
+                                                            strokeWidth: 7.0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      new SizedBox(
+                                                        child: Center(
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    top: 15),
+                                                            child: Text(
+                                                              "Loading",
+                                                              style: new TextStyle(
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .none,
+                                                                  fontFamily:
+                                                                      "VisbyRoundCF",
+                                                                  fontSize: 16,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ));
                                 handleSignIn();
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomePage()),
-                                    ModalRoute.withName('/home'));
+
+                                // onLoading();
+                                // handleLoading();
+
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => HomePage()));
+                                // login();
                               },
                               padding: EdgeInsets.only(left: 50),
                               shape: RoundedRectangleBorder(

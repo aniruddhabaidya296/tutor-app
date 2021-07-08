@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "959020091387-549l0ocm9rgroqtu4k92qmj8su6ekbds.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tutorhub",
+            "certificate_hash": "05905844f576fb82a994e8ba0e3245b88e8b1152"
+          }
+        },
+        {
+          "client_id": "959020091387-lspf4t2vhb7fn7muuik4kida7m7d08f0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tutorhub",
+            "certificate_hash": "55907c97c74a8672e3ec89f4998af986fea7e9d8"
+          }
+        },
+        {
           "client_id": "959020091387-2js0i7fc71lvb973d0necj36efsqc8jp.apps.googleusercontent.com",
           "client_type": 3
         }

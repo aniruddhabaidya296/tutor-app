@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tutorapp/prothomPage.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'prothomPage.dart';
 import 'homepage.dart';
 
@@ -26,15 +26,32 @@ class _EmailLogInState extends State<EmailLogIn> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
+          backgroundColor: Colors.blue[100],
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
           title: new Text("Error"),
           content: new Text("$textField"),
           actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new ElevatedButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            Align(
+              alignment: Alignment.center,
+              child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                elevation: 5,
+                color: Colors.blue,
+                onPressed: () async {
+                  {
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: Text(
+                  'Close',
+                  style: TextStyle(
+                    fontFamily: 'VisbyRoundCF',
+                  ),
+                ),
+              ),
             ),
           ],
         );
@@ -44,28 +61,36 @@ class _EmailLogInState extends State<EmailLogIn> {
 
   void _signInWithEmailAndPassword() async {
     FirebaseAuth _auth = FirebaseAuth.instance;
-
-    var user = (await _auth.signInWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    ))
-        .user;
-
-    if (user != null) {
-      setState(() {
-        _success = true;
-        _userEmail = user.email;
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-            ModalRoute.withName('/home'));
-      });
-    } else {
-      _showDialog("Email not registered");
-      setState(() {
-        _success = false;
-      });
+    // final formState = _formkey.currentState;
+    // if (formState.validate()) {
+    //   formState.save();
+    try {
+      var user = (await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      ))
+          .user;
+      if (user != null) {
+        setState(() {
+          _success = true;
+          _userEmail = user.email;
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+              ModalRoute.withName('/home'));
+        });
+      } else {
+        setState(() {
+          _success = false;
+        });
+      }
+    } catch (e) {
+      String errorMessage = e.toString();
+      var parts = errorMessage.split("]");
+      var finalMessage = parts[1].trimLeft();
+      _showDialog("$finalMessage");
     }
+    // }
   }
 
   @override
@@ -122,11 +147,12 @@ class _EmailLogInState extends State<EmailLogIn> {
                     Padding(
                       padding: EdgeInsets.only(left: 30, right: 30),
                       child: TextFormField(
+                        obscureText: true,
                         controller: _passwordController,
                         decoration:
                             const InputDecoration(labelText: 'Password'),
                         validator: (String? value) {
-                          if (value == '') {
+                          if (_passwordController.text == '') {
                             _showDialog('Please enter some text');
                           }
                         },
@@ -144,7 +170,6 @@ class _EmailLogInState extends State<EmailLogIn> {
                         onPressed: () async {
                           {
                             _signInWithEmailAndPassword();
-                            _showDialog("Wrong Input");
                           }
                         },
                         child: Text(
@@ -156,19 +181,6 @@ class _EmailLogInState extends State<EmailLogIn> {
                         ),
                       ),
                     ),
-
-                    // Container(
-                    //   alignment: Alignment.center,
-                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
-                    //   child: Text(
-                    //     _success == null
-                    //         ? ''
-                    //         : (_success
-                    //             ? ''
-                    //             : 'Sign in failed'),
-                    //     style: TextStyle(color: Colors.red),
-                    //   ),
-                    // )
                   ],
                 ),
               ),

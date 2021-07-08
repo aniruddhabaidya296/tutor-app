@@ -9,6 +9,10 @@ import 'package:tutorapp/homepage.dart';
 import 'package:tutorapp/prothomPage.dart';
 // import 'signup.dart';
 
+class CommonThings {
+  static Size size;
+}
+
 Future<UserCredential> signInWithGoogle() async {
   await FirebaseAuth.instance.setPersistence(Persistence.NONE);
   final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
@@ -34,12 +38,10 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-              fontFamily: 'VisbyRoundCF-Medium',
-              primaryColor: Colors.blue[900],
-              backgroundColor: Colors.lightBlueAccent,
-              buttonTheme: ButtonThemeData(
-                  buttonColor: Colors.blue[100],
-                  textTheme: ButtonTextTheme.primary)),
+            fontFamily: 'VisbyRoundCF-Medium',
+            primaryColor: Colors.blue[900],
+            backgroundColor: Colors.lightBlueAccent,
+          ),
           title: 'TUTOR HUB',
           home: IntroScreen(),
           routes: {

@@ -7,10 +7,10 @@ import 'package:move_to_background/move_to_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tutorapp/createprofilepage.dart';
 import 'package:tutorapp/prothomPage.dart';
+
 // import 'package:student/signup.dart';
 // import 'googlesignin.dart';
 
-// GoogleSignIn googleUser = new GoogleSignIn();
 GoogleSignIn _googleSignIn = new GoogleSignIn();
 
 void handleSignOut() => _googleSignIn.disconnect();
@@ -23,6 +23,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // void onLoading() {
+  //   setState(() {
+  //     loading = true;
+  //     new Future.delayed(new Duration(seconds: 3), login);
+  //   });
+  // }
+
+  // Future login() async {
+  //   setState(() {
+  //     loading = false;
+  //   });
+  // }
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   void initState() {
@@ -43,6 +56,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Theme(
         data: ThemeData(
             dialogBackgroundColor: Colors.blue[100],
@@ -66,6 +80,9 @@ class _HomePageState extends State<HomePage> {
                       return showDialog(
                           context: context,
                           builder: (ctx) => AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0),
+                                ),
                                 title: Text("Log Out"),
                                 content: Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.center,
@@ -80,9 +97,8 @@ class _HomePageState extends State<HomePage> {
                                           onPressed: () async {
                                             final User? user =
                                                 await _auth.currentUser;
+                                            googleHomePageUserSignIn.signOut();
                                             if (user != null) {
-                                              googleHomePageUserSignIn
-                                                  .signOut();
                                               await _auth.signOut();
                                               final String? email = user.email;
                                               ScaffoldMessenger.of(context)
@@ -170,6 +186,10 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 15,
                   ),
                   decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(30.0)),
                       borderSide: BorderSide(color: Colors.black38),
@@ -186,49 +206,54 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 20, left: 30, right: 30),
-                child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.blue[100]),
-                    width: MediaQuery.of(context).size.width / 1.3,
-                    height: 150,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Complete my profile",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'VisbyRoundCF',
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(width: 30),
-                          ElevatedButton(
-                              style: ButtonStyle(
-                                  minimumSize:
-                                      MaterialStateProperty.all(Size(100, 50)),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(18.0),
-                                          side:
-                                              BorderSide(color: Colors.blue))),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.blue),
-                                  elevation: MaterialStateProperty.all(10)),
-                              // color: Colors.blue[400],
-                              // elevation: 10,
-                              child: Text("Go"),
-                              onPressed: () => {
-                                    Navigator.pushNamed(
-                                        context, '/createprofile')
-                                  })
-                        ])),
-              )
+                  padding: EdgeInsets.only(top: 20, left: 30, right: 30),
+                  child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.blue[100]),
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      height: 150,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 0.7,
+                        child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(width: size.width / 30),
+                                  Text(
+                                    "Complete my profile",
+                                    style: TextStyle(
+                                        fontFamily: 'VisbyRoundCF',
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(width: size.width / 30),
+                                  ElevatedButton(
+                                      style: ButtonStyle(
+                                          minimumSize: MaterialStateProperty.all(
+                                              Size(80, 40)),
+                                          shape:
+                                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              18.0),
+                                                      side: BorderSide(
+                                                          color: Colors.blue))),
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.blue),
+                                          elevation:
+                                              MaterialStateProperty.all(10)),
+                                      // color: Colors.blue[400],
+                                      // elevation: 10,
+                                      child: Text("Go"),
+                                      onPressed: () =>
+                                          {Navigator.pushNamed(context, '/createprofile')}),
+                                  SizedBox(width: size.width / 30),
+                                ])),
+                      )))
             ])),
           );
         }));
