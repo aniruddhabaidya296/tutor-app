@@ -23,7 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    
+  firebase_picture_uploader: ^1.2.3         
   http: 
   uuid: 3.0.4
   back_button_interceptor: ^5.0.1
@@ -37,6 +37,10 @@ dependencies:
   firebase_auth: ^2.0.0
   google_sign_in: "^4.5.1"
   firebase_database:
+  image_picker:
+  firebase_storage:
+  permission_handler:
+    
 
   
 
@@ -60,12 +64,13 @@ flutter:
         
   uses-material-design: true
   assets:
-    - assets/tutorhub_logo.PNG
+    - assets/images/tutorhub_logo.PNG
+    - assets/images/goku.png
   
 
 # flutter_native_splash:
 #   color: "#9AFEFF"
-#   image: assets/tutorhub_logo.PNG
+#   image: assets/images/tutorhub_logo.PNG
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

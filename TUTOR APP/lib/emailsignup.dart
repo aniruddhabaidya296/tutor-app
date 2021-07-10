@@ -91,8 +91,8 @@ class _EmailSignUpState extends State<EmailSignUp> {
                                 height: MediaQuery.of(context).size.height / 8,
                                 child: Padding(
                                   padding: EdgeInsets.only(bottom: 30, top: 30),
-                                  child:
-                                      Image.asset("assets/tutorhub_logo.PNG"),
+                                  child: Image.asset(
+                                      "assets/images/tutorhub_logo.PNG"),
                                 ),
                               ),
                               Container(

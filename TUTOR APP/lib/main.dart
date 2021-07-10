@@ -4,10 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'package:tutorapp/addprofileimage.dart';
 import 'package:tutorapp/createprofilepage.dart';
 import 'package:tutorapp/homepage.dart';
 import 'package:tutorapp/prothomPage.dart';
-// import 'signup.dart';
 
 class CommonThings {
   static Size size;
@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
             // When navigating to the "/second" route, build the SecondScreen widget.
             '/home': (context) => HomePage(),
             '/createprofile': (context) => CreateProfilePage(),
+            '/addprofileimage': (context) => AddProfileImage()
           },
         ));
   }
@@ -73,7 +74,8 @@ class IntroScreen extends StatelessWidget {
             fontFamily: 'VisbyRoundCF',
           ),
         ),
-        image: Image.asset('assets/tutorhub_logo.PNG', fit: BoxFit.scaleDown),
+        image: Image.asset('assets/images/tutorhub_logo.PNG',
+            fit: BoxFit.scaleDown),
         backgroundColor: Colors.blue[100],
         styleTextUnderTheLoader: new TextStyle(),
         photoSize: 200.0,

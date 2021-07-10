@@ -1,11 +1,18 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
+import 'addprofileimage.dart';
 import 'homepage.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+
+Teacher temp_teacher = new Teacher();
 
 class TeacherFirstPage extends StatefulWidget {
   const TeacherFirstPage({Key? key}) : super(key: key);
@@ -36,6 +43,19 @@ class Teacher {
     this.std = std;
     this.medium = medium;
   }
+
+  bool validator() {
+    if ((this.name) ||
+        (this.institution) ||
+        (this.experience) ||
+        (this.subject) ||
+        (this.board) ||
+        (this.std) ||
+        (this.medium) == null) {
+      return false;
+    } else
+      return true;
+  }
 }
 
 class _TeacherFirstPageState extends State<TeacherFirstPage> {
@@ -54,7 +74,17 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
         }));
   }
 
-  Teacher temp_teacher = new Teacher();
+  void setNull(Teacher t) {
+    t.id = null;
+    t.name = null;
+    t.institution = null;
+    t.experience = null;
+    t.subject = null;
+    t.board = null;
+    t.std = null;
+    t.medium = null;
+  }
+
   TextEditingController _schoolNameController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _experienceController = TextEditingController();
@@ -64,6 +94,7 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
   var _interfacevalue;
 
   void initState() {
+    setNull(temp_teacher);
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
   }
@@ -77,6 +108,37 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
   bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
     MoveToBackground.moveTaskToBack();
     return true;
+  }
+
+  String imageUrl = '';
+
+  uploadImage() async {
+    final _firebaseStorage = FirebaseStorage.instance;
+    final _imagePicker = ImagePicker();
+    PickedFile? image;
+    await Permission.photos.request();
+    var permissionStatus = await Permission.photos.status;
+    if (permissionStatus.isGranted) {
+      //Select Image
+      image = await _imagePicker.getImage(source: ImageSource.gallery);
+      var file = File(image!.path);
+      if (image != null) {
+        //Upload to Firebase
+        var snapshot = await _firebaseStorage
+            .ref()
+            .child('Images/UserImages')
+            .putFile(file);
+        var downloadUrl = await snapshot.ref.getDownloadURL();
+        setState(() {
+          imageUrl = downloadUrl;
+          profileImageUrl = downloadUrl;
+        });
+      } else {
+        print('No Image Path Received');
+      }
+    } else {
+      print('Permission not granted. Try Again with permission access');
+    }
   }
 
   @override
@@ -101,11 +163,36 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                 Padding(
                   padding:
                       EdgeInsets.only(left: 50, right: 50, bottom: 10, top: 50),
-                  child: Text('WELCOME',
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontFamily: 'VisbyRoundCF',
-                          fontWeight: FontWeight.bold)),
+                  child: Container(
+                      width: MediaQuery.of(context).size.width / 1.7,
+                      height: MediaQuery.of(context).size.width / 1.7,
+                      margin: EdgeInsets.all(40),
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15),
+                        ),
+                        // border: Border.all(color: Colors.white),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            offset: Offset(2, 2),
+                            spreadRadius: 2,
+                            blurRadius: 1,
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                          child: (profileImageUrl != null)
+                              ? Image.network(profileImageUrl,
+                                  fit: BoxFit.cover)
+                              : Center(
+                                  child: FloatingActionButton(
+                                      child: const Icon(Icons.add),
+                                      backgroundColor: Colors.blue,
+                                      onPressed: () {
+                                        uploadImage();
+                                      })))),
                 ),
                 Padding(
                     padding: EdgeInsets.only(left: 50, right: 50, bottom: 10),

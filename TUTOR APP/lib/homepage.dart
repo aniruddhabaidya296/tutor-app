@@ -1,5 +1,4 @@
 // import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -7,7 +6,17 @@ import 'package:move_to_background/move_to_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tutorapp/createprofilepage.dart';
 import 'package:tutorapp/prothomPage.dart';
+import 'package:tutorapp/studentfirstpage.dart';
+import 'package:tutorapp/teacherfirstpage.dart';
 
+import 'addprofileimage.dart';
+
+class UserDetails {
+  String displayName = '';
+  void init(String name) {
+    this.displayName = name;
+  }
+}
 // import 'package:student/signup.dart';
 // import 'googlesignin.dart';
 
@@ -35,6 +44,95 @@ class _HomePageState extends State<HomePage> {
   //     loading = false;
   //   });
   // }
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _openDrawer() {
+    _scaffoldKey.currentState!.openDrawer();
+  }
+
+  void _closeDrawer() {
+    Navigator.of(context).pop();
+  }
+
+  Drawer returnDrawer() {
+    return Drawer(
+      child: Column(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+                width: MediaQuery.of(context).size.width * 0.85,
+                child: (profileImageUrl != null)
+                    ? DrawerHeader(
+                        child: Image.network(
+                        profileImageUrl,
+                        fit: BoxFit.contain,
+                      ))
+                    : DrawerHeader(
+                        child: Text(""),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: AssetImage("assets/images/goku.png"),
+                                fit: BoxFit.contain)))),
+          ),
+          Expanded(
+            flex: 2,
+            child: ListView(children: [
+              ListTile(
+                title: Text("Home"),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text("Home"),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text("Home"),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text("Home"),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text("Home"),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text("Home"),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text("Home"),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text("Home"),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ]),
+          )
+        ],
+      ),
+    );
+  }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
@@ -64,6 +162,8 @@ class _HomePageState extends State<HomePage> {
       }
     }, child: Builder(builder: (context) {
       return Scaffold(
+        key: _scaffoldKey,
+        drawer: returnDrawer(),
         backgroundColor: Colors.blue[50],
         appBar: AppBar(
           actions: <Widget>[
@@ -162,7 +262,7 @@ class _HomePageState extends State<HomePage> {
               IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () {
-                  //SideNavBar here
+                  _openDrawer();
                 },
                 color: Colors.white,
               ),
@@ -214,6 +314,8 @@ class _HomePageState extends State<HomePage> {
                     width: MediaQuery.of(context).size.width / 0.7,
                     child: FittedBox(
                         fit: BoxFit.contain,
+                        // child: (temp_student.validator()||temp_teacher.validator())
+                        // ? Text("Hi $ ")
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -245,7 +347,7 @@ class _HomePageState extends State<HomePage> {
                                   // elevation: 10,
                                   child: Text("Go"),
                                   onPressed: () =>
-                                      {Navigator.pushNamed(context, '/createprofile')}),
+                                      {Navigator.pushNamed(context, '/addprofileimage')}),
                               SizedBox(width: size.width / 30),
                             ])),
                   )))

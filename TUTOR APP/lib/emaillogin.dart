@@ -122,7 +122,7 @@ class _EmailLogInState extends State<EmailLogIn> {
                 Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/tutorhub_logo.PNG'),
+                      image: AssetImage('assets/images/tutorhub_logo.PNG'),
                       fit: BoxFit.contain,
                     ),
                   ),
