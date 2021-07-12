@@ -13,6 +13,7 @@ import 'homepage.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'main.dart';
+import 'studentfirstpage.dart';
 
 String teacherId = uid.v4();
 Uuid uid = new Uuid();
@@ -120,7 +121,22 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
         var downloadUrl = await snapshot.ref.getDownloadURL();
         setState(() {
           imageUrl = downloadUrl;
-          profileImageUrl = downloadUrl;
+          profileDp = downloadUrl;
+          WidgetsBinding.instance!.addPostFrameCallback((_) => () async {
+                try {
+                  profileDp = await storage
+                      .ref()
+                      .child('Images/$currentUserId')
+                      .getDownloadURL();
+                  print(profileDp);
+                } catch (e) {
+                  profileDp = await storage
+                      .ref()
+                      .child('Images/placeholder.png')
+                      .getDownloadURL();
+                  print("Check if image exists: $e");
+                }
+              });
         });
       } else {
         print('No Image Path Received');

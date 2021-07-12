@@ -13,6 +13,7 @@ import 'package:move_to_background/move_to_background.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 // Student temp_student = new Student();
+var profileDp;
 
 class StudentFirstPage extends StatefulWidget {
   @override
@@ -89,7 +90,6 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
       //Select Image
       image = await _imagePicker.getImage(source: ImageSource.gallery);
       var file = File(image!.path);
-      showProgressIndicator(false);
       if (image != null) {
         //Upload to Firebase
         var snapshot = await _firebaseStorage
@@ -99,7 +99,22 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
         var downloadUrl = await snapshot.ref.getDownloadURL();
         setState(() {
           imageUrl = downloadUrl;
-          profileDp = downloadUrl;
+          profileDp = imageUrl;
+          WidgetsBinding.instance!.addPostFrameCallback((_) => () async {
+                try {
+                  profileDp = await storage
+                      .ref()
+                      .child('Images/$currentUserId')
+                      .getDownloadURL();
+                  print(profileDp);
+                } catch (e) {
+                  profileDp = await storage
+                      .ref()
+                      .child('Images/placeholder.png')
+                      .getDownloadURL();
+                  print("Check if image exists: $e");
+                }
+              });
         });
       } else {
         print('No Image Path Received');

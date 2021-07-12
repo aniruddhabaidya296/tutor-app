@@ -16,7 +16,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'addprofileimage.dart';
 
-var profileDp = null;
 bool flag = false;
 FirebaseStorage storage = FirebaseStorage.instance;
 
@@ -42,37 +41,51 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  var drawerHeader = DrawerHeader(
-      child: CachedNetworkImage(
-    imageUrl:
-        "https://firebasestorage.googleapis.com/v0/b/the-tutor-app-4aed9.appspot.com/o/Images%2Fplaceholder.png?alt=media&token=ad91245d-0a41-4b26-a033-037c5848e173",
-    progressIndicatorBuilder: (context, url, downloadProgress) =>
-        CircularProgressIndicator(
-      value: downloadProgress.progress,
-      strokeWidth: 7.0,
-    ),
-    errorWidget: (context, url, error) => Icon(Icons.error),
-  ));
+  // var drawerHeader = DrawerHeader(
+  //     //     child: CachedNetworkImage(
+  //     //   imageUrl:
+  //     //       "https://firebasestorage.googleapis.com/v0/b/the-tutor-app-4aed9.appspot.com/o/Images%2Fplaceholder.png?alt=media&token=ad91245d-0a41-4b26-a033-037c5848e173",
+  //     //   progressIndicatorBuilder: (context, url, downloadProgress) =>
+  //     //       CircularProgressIndicator(
+  //     //     value: downloadProgress.progress,
+  //     //     strokeWidth: 7.0,
+  //     //   ),
+  //     //   errorWidget: (context, url, error) => Icon(Icons.error),
+  //     // )
+  //     child: Image.network(
+  //   profileDp,
+  //   loadingBuilder:
+  //       (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+  //     if (loadingProgress == null) return child;
+  //     return Center(
+  //       child: CircularProgressIndicator(
+  //         value: (loadingProgress.expectedTotalBytes != null)
+  //             ? loadingProgress.cumulativeBytesLoaded.toDouble() /
+  //                 loadingProgress.expectedTotalBytes!.toDouble()
+  //             : null,
+  //       ),
+  //     );
+  //   },
+  // )
 
-  fileExists() async {
-    try {
-      profileDp =
-          await storage.ref().child('Images/$currentUserId').getDownloadURL();
-      print(profileDp);
-    } catch (e) {
-      profileDp =
-          await storage.ref().child('Images/placeholder.png').getDownloadURL();
-      print("Check if image exists: $e");
-    }
-  }
+  // CachedNetworkImage(
+  //   imageUrl: profileDp,
+  //   //"https://firebasestorage.googleapis.com/v0/b/the-tutor-app-4aed9.appspot.com/o/Images%2Fplaceholder.png?alt=media&token=ad91245d-0a41-4b26-a033-037c5848e173",
+  //   progressIndicatorBuilder: (context, imageUrl, downloadProgress) =>
+  //       CircularProgressIndicator(
+  //     value: downloadProgress.progress,
+  //     strokeWidth: 7.0,
+  //   ),
+  //   errorWidget: (context, url, error) => Icon(Icons.error),
+  // ),
+  // );
 
   void _openDrawer() async {
     _scaffoldKey.currentState!.openDrawer();
-    await fileExists();
-    if (profileDp != null) {
-      drawerHeader =
-          DrawerHeader(child: Image.network(profileDp, fit: BoxFit.contain));
-    }
+    // if (profileDp != null) {
+    // drawerHeader =
+    //     DrawerHeader(child: Image.network(profileDp, fit: BoxFit.contain));
+    // }
   }
 
   void _closeDrawer() {
@@ -84,18 +97,26 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           Expanded(
-              flex: 1,
-              child: Container(
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  child: drawerHeader
-                  // DrawerHeader(
-                  //         child: Text(""),
-                  //         decoration: BoxDecoration(
-                  //             shape: BoxShape.circle,
-                  //             image: DecorationImage(
-                  //                 image: AssetImage("assets/images/goku.png"),
-                  //                 fit: BoxFit.contain)))),
-                  )),
+            flex: 1,
+            child: Container(
+                width: MediaQuery.of(context).size.width * 0.85,
+                child: DrawerHeader(
+                    child: Image.network(
+                  profileDp,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: (loadingProgress.expectedTotalBytes != null)
+                            ? loadingProgress.cumulativeBytesLoaded.toDouble() /
+                                loadingProgress.expectedTotalBytes!.toDouble()
+                            : null,
+                      ),
+                    );
+                  },
+                ))),
+          ),
           Expanded(
             flex: 2,
             child: ListView(children: [
@@ -154,11 +175,32 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  var isLoading;
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
+    WidgetsBinding.instance!.addPostFrameCallback((_) => loadData());
+  }
+
+  Future loadData() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      profileDp =
+          await storage.ref().child('Images/$currentUserId').getDownloadURL();
+      print(profileDp);
+    } catch (e) {
+      profileDp =
+          await storage.ref().child('Images/placeholder.png').getDownloadURL();
+      print("Check if image exists: $e");
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -213,6 +255,7 @@ class _HomePageState extends State<HomePage> {
                                     ElevatedButton(
                                       child: Text("Yes"),
                                       onPressed: () async {
+                                        // profileDp = null;
                                         final User? user =
                                             await _auth.currentUser;
                                         googleHomePageUserSignIn.signOut();

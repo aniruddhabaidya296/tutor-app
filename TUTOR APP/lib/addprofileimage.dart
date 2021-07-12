@@ -38,7 +38,6 @@ class _AddProfileImageState extends State<AddProfileImage> {
       //Select Image
       image = await _imagePicker.getImage(source: ImageSource.gallery);
       var file = File(image!.path);
-      showProgressIndicator(false);
       if (image != null) {
         //Upload to Firebase
         var snapshot =
