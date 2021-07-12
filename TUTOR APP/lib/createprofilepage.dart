@@ -5,6 +5,8 @@ import 'homepage.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 
+import 'main.dart';
+
 class CreateProfilePage extends StatefulWidget {
   const CreateProfilePage({Key? key}) : super(key: key);
 
@@ -12,7 +14,7 @@ class CreateProfilePage extends StatefulWidget {
   _CreateProfilePageState createState() => _CreateProfilePageState();
 }
 
-var user;
+var tutorHubUser;
 
 class _CreateProfilePageState extends State<CreateProfilePage> {
   void initState() {
@@ -67,7 +69,8 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                 elevation: 5,
                 color: Colors.blue,
                 onPressed: () {
-                  user = "Teacher";
+                  flag = false;
+                  tutorHubUser = "Teacher";
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -98,7 +101,8 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                 elevation: 5,
                 color: Colors.blue,
                 onPressed: () {
-                  user = "Student";
+                  flag = false;
+                  tutorHubUser = "Student";
                   Navigator.push(
                       context,
                       MaterialPageRoute(

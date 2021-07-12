@@ -1,0 +1,21 @@
+user is: User(
+    displayName: null, 
+    email: aniruddhabaidya3296@gmail.com, 
+    emailVerified: false, 
+    isAnonymous: false, 
+    metadata: UserMetadata(
+        creationTime: 2021-07-11 21:36:24.472, 
+        lastSignInTime: 2021-07-11 21:48:31.985), 
+        phoneNumber: null, 
+        photoURL: null, 
+        providerData, 
+        [UserInfo(
+            displayName: null, 
+            email: aniruddhabaidya3296@gmail.com, 
+            phoneNumber: null, 
+            photoURL: null, 
+            providerId: password, 
+            uid: aniruddhabaidya3296@gmail.com)], 
+    refreshToken: , 
+    tenantId: null, 
+    uid: 1Jw0JrIM8haaCgQnBhd8CMLHpsW2)

@@ -1,20 +1,24 @@
 // @dart=2.12
 import 'dart:convert';
-// import 'dart:js';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:student/createprofilepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-// import 'package:student/googlesignin.dart';
 import 'package:tutorapp/homepage.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:uuid/uuid.dart';
+import 'package:uuid/uuid.dart';
 import 'emaillogin.dart';
 import 'emailsignup.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+
+abstract class Person {
+  String name;
+  String id;
+  String role;
+  Person(this.name, this.role, this.id) {}
+}
+
+String currentUserId = '';
 
 bool loading = true;
 DatabaseReference dbRef = FirebaseDatabase.instance.reference().child("Users");
@@ -67,7 +71,6 @@ class _ProthomPageState extends State<ProthomPage> {
 
   GoogleSignInAccount? _currentUser;
   // String _contactText = '';
-  String uid = '';
 
   @override
   void initState() {
@@ -121,7 +124,7 @@ class _ProthomPageState extends State<ProthomPage> {
         "name": firebaseUser.displayName,
         "uid": authResult.user!.uid
       });
-      uid = authResult.user!.uid;
+      currentUserId = authResult.user!.uid;
       loading = false;
       loading
           ? bodyProgress

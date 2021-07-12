@@ -1,15 +1,24 @@
 // import 'dart:html';
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tutorapp/createprofilepage.dart';
+import 'package:tutorapp/main.dart';
 import 'package:tutorapp/prothomPage.dart';
 import 'package:tutorapp/studentfirstpage.dart';
 import 'package:tutorapp/teacherfirstpage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'addprofileimage.dart';
+
+var profileDp = null;
+bool flag = false;
+FirebaseStorage storage = FirebaseStorage.instance;
 
 class UserDetails {
   String displayName = '';
@@ -26,28 +35,44 @@ void handleSignOut() => _googleSignIn.disconnect();
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, String? uid}) : super(key: key);
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  // void onLoading() {
-  //   setState(() {
-  //     loading = true;
-  //     new Future.delayed(new Duration(seconds: 3), login);
-  //   });
-  // }
-
-  // Future login() async {
-  //   setState(() {
-  //     loading = false;
-  //   });
-  // }
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void _openDrawer() {
+  var drawerHeader = DrawerHeader(
+      child: CachedNetworkImage(
+    imageUrl:
+        "https://firebasestorage.googleapis.com/v0/b/the-tutor-app-4aed9.appspot.com/o/Images%2Fplaceholder.png?alt=media&token=ad91245d-0a41-4b26-a033-037c5848e173",
+    progressIndicatorBuilder: (context, url, downloadProgress) =>
+        CircularProgressIndicator(
+      value: downloadProgress.progress,
+      strokeWidth: 7.0,
+    ),
+    errorWidget: (context, url, error) => Icon(Icons.error),
+  ));
+
+  fileExists() async {
+    try {
+      profileDp =
+          await storage.ref().child('Images/$currentUserId').getDownloadURL();
+      print(profileDp);
+    } catch (e) {
+      profileDp =
+          await storage.ref().child('Images/placeholder.png').getDownloadURL();
+      print("Check if image exists: $e");
+    }
+  }
+
+  void _openDrawer() async {
     _scaffoldKey.currentState!.openDrawer();
+    await fileExists();
+    if (profileDp != null) {
+      drawerHeader =
+          DrawerHeader(child: Image.network(profileDp, fit: BoxFit.contain));
+    }
   }
 
   void _closeDrawer() {
@@ -59,23 +84,18 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           Expanded(
-            flex: 1,
-            child: Container(
-                width: MediaQuery.of(context).size.width * 0.85,
-                child: (profileImageUrl != null)
-                    ? DrawerHeader(
-                        child: Image.network(
-                        profileImageUrl,
-                        fit: BoxFit.contain,
-                      ))
-                    : DrawerHeader(
-                        child: Text(""),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: AssetImage("assets/images/goku.png"),
-                                fit: BoxFit.contain)))),
-          ),
+              flex: 1,
+              child: Container(
+                  width: MediaQuery.of(context).size.width * 0.85,
+                  child: drawerHeader
+                  // DrawerHeader(
+                  //         child: Text(""),
+                  //         decoration: BoxDecoration(
+                  //             shape: BoxShape.circle,
+                  //             image: DecorationImage(
+                  //                 image: AssetImage("assets/images/goku.png"),
+                  //                 fit: BoxFit.contain)))),
+                  )),
           Expanded(
             flex: 2,
             child: ListView(children: [
@@ -314,8 +334,6 @@ class _HomePageState extends State<HomePage> {
                     width: MediaQuery.of(context).size.width / 0.7,
                     child: FittedBox(
                         fit: BoxFit.contain,
-                        // child: (temp_student.validator()||temp_teacher.validator())
-                        // ? Text("Hi $ ")
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -347,7 +365,7 @@ class _HomePageState extends State<HomePage> {
                                   // elevation: 10,
                                   child: Text("Go"),
                                   onPressed: () =>
-                                      {Navigator.pushNamed(context, '/addprofileimage')}),
+                                      {Navigator.pushNamed(context, '/createprofile')}),
                               SizedBox(width: size.width / 30),
                             ])),
                   )))

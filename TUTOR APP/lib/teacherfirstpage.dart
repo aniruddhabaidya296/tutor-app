@@ -6,13 +6,16 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tutorapp/prothomPage.dart';
 import 'package:uuid/uuid.dart';
 import 'addprofileimage.dart';
 import 'homepage.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+import 'main.dart';
 
-Teacher temp_teacher = new Teacher();
+String teacherId = uid.v4();
+Uuid uid = new Uuid();
 
 class TeacherFirstPage extends StatefulWidget {
   const TeacherFirstPage({Key? key}) : super(key: key);
@@ -21,20 +24,17 @@ class TeacherFirstPage extends StatefulWidget {
   _TeacherFirstPageState createState() => _TeacherFirstPageState();
 }
 
-class Teacher {
-  var name;
+class Teacher extends Person {
   var institution;
   var experience;
   var subject;
   var board;
   var std;
-  var id;
   var medium;
-  var uuid = Uuid();
 
-  void _createTeacher(String name, String institution, String experience,
-      String subject, String board, String std, String medium) {
-    this.id = uuid.v1();
+  Teacher(String name, String institution, String experience, String subject,
+      String board, String std, String medium, String id)
+      : super(name, "Teacher", id) {
     this.name = name;
     this.institution = institution;
     this.experience = experience;
@@ -45,13 +45,13 @@ class Teacher {
   }
 
   bool validator() {
-    if ((this.name) ||
-        (this.institution) ||
-        (this.experience) ||
-        (this.subject) ||
-        (this.board) ||
-        (this.std) ||
-        (this.medium) == null) {
+    if ((this.name == '') ||
+        (this.institution == '') ||
+        (this.experience == '') ||
+        (this.subject == '') ||
+        (this.board == '') ||
+        (this.std == '') ||
+        (this.medium == '')) {
       return false;
     } else
       return true;
@@ -74,17 +74,6 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
         }));
   }
 
-  void setNull(Teacher t) {
-    t.id = null;
-    t.name = null;
-    t.institution = null;
-    t.experience = null;
-    t.subject = null;
-    t.board = null;
-    t.std = null;
-    t.medium = null;
-  }
-
   TextEditingController _schoolNameController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _experienceController = TextEditingController();
@@ -94,7 +83,6 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
   var _interfacevalue;
 
   void initState() {
-    setNull(temp_teacher);
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
   }
@@ -111,6 +99,7 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
   }
 
   String imageUrl = '';
+  String profileImageUrl = '';
 
   uploadImage() async {
     final _firebaseStorage = FirebaseStorage.instance;
@@ -126,7 +115,7 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
         //Upload to Firebase
         var snapshot = await _firebaseStorage
             .ref()
-            .child('Images/UserImages')
+            .child('Images/$teacherId')
             .putFile(file);
         var downloadUrl = await snapshot.ref.getDownloadURL();
         setState(() {
@@ -183,17 +172,15 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                         ],
                       ),
                       child: Center(
-                          child: (profileImageUrl != null)
-                              ? Image.network(profileImageUrl,
-                                  fit: BoxFit.cover)
-                              : Center(
-                                  child: FloatingActionButton(
-                                      child: const Icon(Icons.add),
-                                      backgroundColor: Colors.blue,
-                                      onPressed: () {
-                                        uploadImage();
-                                      })))),
+                          child: Image.network(profileDp, fit: BoxFit.cover))),
                 ),
+                Center(
+                    child: FloatingActionButton(
+                        child: const Icon(Icons.add),
+                        backgroundColor: Colors.blue,
+                        onPressed: () {
+                          uploadImage();
+                        })),
                 Padding(
                     padding: EdgeInsets.only(left: 50, right: 50, bottom: 10),
                     child: TextFormField(
@@ -377,15 +364,21 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                       ),
                       color: Colors.blue,
                       onPressed: () {
-                        temp_teacher._createTeacher(
+                        Teacher temp_teacher = new Teacher(
                             _schoolNameController.text,
                             _nameController.text,
                             _experienceController.text,
                             _subjectController.text,
                             _boardController.text,
                             _classController.text,
-                            _interfacevalue.toString());
+                            _interfacevalue.toString(),
+                            currentUserId);
+                        print(
+                            "======================$currentUserId==================");
                         _callCreateTeacherApi(temp_teacher);
+                        if (temp_teacher.validator()) {
+                          flag = true;
+                        }
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(builder: (context) => HomePage()),

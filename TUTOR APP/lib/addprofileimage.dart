@@ -5,8 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tutorapp/createprofilepage.dart';
 import 'package:firebase_picture_uploader/firebase_picture_uploader.dart';
-
-var profileImageUrl;
+import 'package:tutorapp/prothomPage.dart';
 
 class AddProfileImage extends StatefulWidget {
   const AddProfileImage({Key? key}) : super(key: key);
@@ -27,6 +26,7 @@ dynamic showProgressIndicator(bool enable) async {
 
 class _AddProfileImageState extends State<AddProfileImage> {
   String imageUrl = '';
+  String profileImageUrl = '';
 
   uploadImage() async {
     final _firebaseStorage = FirebaseStorage.instance;
@@ -41,10 +41,8 @@ class _AddProfileImageState extends State<AddProfileImage> {
       showProgressIndicator(false);
       if (image != null) {
         //Upload to Firebase
-        var snapshot = await _firebaseStorage
-            .ref()
-            .child('Images/UserImages')
-            .putFile(file);
+        var snapshot =
+            await _firebaseStorage.ref().child('Images/').putFile(file);
         var downloadUrl = await snapshot.ref.getDownloadURL();
         setState(() {
           imageUrl = downloadUrl;
@@ -91,7 +89,7 @@ class _AddProfileImageState extends State<AddProfileImage> {
                   ],
                 ),
                 child: Center(
-                    child: (profileImageUrl != null)
+                    child: (profileImageUrl != '')
                         ? Image.network(profileImageUrl, fit: BoxFit.cover)
                         : Center(
                             child: FloatingActionButton(

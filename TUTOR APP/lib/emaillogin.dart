@@ -70,10 +70,13 @@ class _EmailLogInState extends State<EmailLogIn> {
         password: _passwordController.text,
       ))
           .user;
+      print(
+          "##########################user is: $user################################");
       if (user != null) {
         setState(() {
           _success = true;
           _userEmail = user.email;
+          currentUserId = user.uid;
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => HomePage()),
@@ -143,8 +146,7 @@ class _EmailLogInState extends State<EmailLogIn> {
                               borderSide: BorderSide(color: Colors.black12)),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(18),
-                              borderSide:
-                                  const BorderSide(color: Colors.black)),
+                              borderSide: BorderSide(color: Colors.black)),
                           labelText: 'Email'),
                       validator: (String? value) {
                         if (value == Null) {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:tutorapp/homepage.dart';
+import 'package:tutorapp/prothomPage.dart';
 import 'main.dart';
 
 class EmailSignUp extends StatefulWidget {
@@ -26,6 +27,8 @@ class _EmailSignUpState extends State<EmailSignUp> {
         "age": ageController.text,
         "name": nameController.text
       }).then((res) {
+        currentUserId = result.user!.uid;
+        print("=====================$currentUserId========================");
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

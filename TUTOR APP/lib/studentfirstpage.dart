@@ -2,41 +2,40 @@ import 'dart:convert';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tutorapp/prothomPage.dart';
 import 'dart:io';
 import 'addprofileimage.dart';
 import 'homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:uuid/uuid.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 
-Student temp_student = new Student();
+// Student temp_student = new Student();
 
 class StudentFirstPage extends StatefulWidget {
   @override
   _StudentFirstPageState createState() => _StudentFirstPageState();
 }
 
-class Student {
-  var name;
+class Student extends Person {
   var school;
   var board;
   var std;
-  var id;
-  var uuid = Uuid();
 
-  void _createStudent(String name, String school, String board, double std) {
-    this.id = uuid.v1();
-    this.name = name;
+  Student(String name, String school, String board, double std, String id)
+      : super(name, "Student", id) {
     this.school = school;
     this.board = board;
     this.std = std;
   }
 
   bool validator() {
-    if ((this.name) || (this.school) || (this.board) || (this.std) == null) {
+    if ((this.name == '') ||
+        (this.school == '') ||
+        (this.board == '') ||
+        (this.std == '')) {
       return false;
     } else
       return true;
@@ -61,15 +60,7 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
   TextEditingController _boardController = TextEditingController();
   TextEditingController _classController = TextEditingController();
 
-  void setNull(Student s) {
-    s.name = null;
-    s.school = null;
-    s.board = null;
-    s.std = null;
-  }
-
   void initState() {
-    setNull(temp_student);
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
   }
@@ -86,6 +77,7 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
   }
 
   String imageUrl = '';
+  String profileImageUrl = '';
 
   uploadImage() async {
     final _firebaseStorage = FirebaseStorage.instance;
@@ -102,12 +94,12 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
         //Upload to Firebase
         var snapshot = await _firebaseStorage
             .ref()
-            .child('Images/UserImages')
+            .child('Images/$currentUserId')
             .putFile(file);
         var downloadUrl = await snapshot.ref.getDownloadURL();
         setState(() {
           imageUrl = downloadUrl;
-          profileImageUrl = downloadUrl;
+          profileDp = downloadUrl;
         });
       } else {
         print('No Image Path Received');
@@ -153,12 +145,7 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
                         ],
                       ),
                       child: Center(
-                          child: (profileImageUrl != null)
-                              ? Image.network(profileImageUrl,
-                                  fit: BoxFit.cover)
-                              : Image(
-                                  image:
-                                      AssetImage("assets/images/goku.png")))),
+                          child: Image.network(profileDp, fit: BoxFit.cover))),
                   Center(
                       child: FloatingActionButton(
                           child: const Icon(Icons.photo_camera),
@@ -246,12 +233,18 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
                     child: MaterialButton(
                         minWidth: MediaQuery.of(context).size.width / 1.3,
                         onPressed: () {
-                          temp_student._createStudent(
+                          Student temp_student = new Student(
                               _nameController.text,
                               _schoolController.text,
                               _boardController.text,
-                              double.parse(_classController.text));
+                              double.parse(_classController.text),
+                              currentUserId);
+                          print(
+                              "======================$currentUserId==================");
                           _callCreateStudentApi(temp_student);
+                          if (temp_student.validator()) {
+                            flag = true;
+                          }
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(builder: (context) => HomePage()),
