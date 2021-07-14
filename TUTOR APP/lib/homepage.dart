@@ -1,9 +1,10 @@
 // import 'dart:html';
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,11 +14,13 @@ import 'package:tutorapp/prothomPage.dart';
 import 'package:tutorapp/studentfirstpage.dart';
 import 'package:tutorapp/teacherfirstpage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:http/http.dart' as http;
 import 'addprofileimage.dart';
+import 'bloc/photo_bloc.dart';
 
-bool flag = false;
+var flag, firstName;
 FirebaseStorage storage = FirebaseStorage.instance;
+var userName;
 
 class UserDetails {
   String displayName = '';
@@ -25,8 +28,28 @@ class UserDetails {
     this.displayName = name;
   }
 }
+
 // import 'package:student/signup.dart';
 // import 'googlesignin.dart';
+
+getStudentNameApi(String id) async {
+  // print("CreateStudentApi called");
+  final response = await http.get(Uri.parse(
+      'http://192.168.1.100:8080/student/getNameById?id=$currentUserId'));
+  if (response.statusCode == 200) {
+    var jsonResponse = jsonDecode(response.body);
+    print("$jsonResponse");
+    var name = jsonResponse['Name'];
+    userName = name;
+    firstName = userName.toString();
+    firstName = firstName.split(' ')[0];
+    if (name != 'null') {
+      flag = true;
+    }
+    print("Name: $name============");
+  } else
+    throw Exception('Failed to load Person');
+}
 
 GoogleSignIn _googleSignIn = new GoogleSignIn();
 
@@ -41,51 +64,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // var drawerHeader = DrawerHeader(
-  //     //     child: CachedNetworkImage(
-  //     //   imageUrl:
-  //     //       "https://firebasestorage.googleapis.com/v0/b/the-tutor-app-4aed9.appspot.com/o/Images%2Fplaceholder.png?alt=media&token=ad91245d-0a41-4b26-a033-037c5848e173",
-  //     //   progressIndicatorBuilder: (context, url, downloadProgress) =>
-  //     //       CircularProgressIndicator(
-  //     //     value: downloadProgress.progress,
-  //     //     strokeWidth: 7.0,
-  //     //   ),
-  //     //   errorWidget: (context, url, error) => Icon(Icons.error),
-  //     // )
-  //     child: Image.network(
-  //   profileDp,
-  //   loadingBuilder:
-  //       (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-  //     if (loadingProgress == null) return child;
-  //     return Center(
-  //       child: CircularProgressIndicator(
-  //         value: (loadingProgress.expectedTotalBytes != null)
-  //             ? loadingProgress.cumulativeBytesLoaded.toDouble() /
-  //                 loadingProgress.expectedTotalBytes!.toDouble()
-  //             : null,
-  //       ),
-  //     );
-  //   },
-  // )
-
-  // CachedNetworkImage(
-  //   imageUrl: profileDp,
-  //   //"https://firebasestorage.googleapis.com/v0/b/the-tutor-app-4aed9.appspot.com/o/Images%2Fplaceholder.png?alt=media&token=ad91245d-0a41-4b26-a033-037c5848e173",
-  //   progressIndicatorBuilder: (context, imageUrl, downloadProgress) =>
-  //       CircularProgressIndicator(
-  //     value: downloadProgress.progress,
-  //     strokeWidth: 7.0,
-  //   ),
-  //   errorWidget: (context, url, error) => Icon(Icons.error),
-  // ),
-  // );
-
   void _openDrawer() async {
     _scaffoldKey.currentState!.openDrawer();
-    // if (profileDp != null) {
-    // drawerHeader =
-    //     DrawerHeader(child: Image.network(profileDp, fit: BoxFit.contain));
-    // }
   }
 
   void _closeDrawer() {
@@ -99,75 +79,65 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             flex: 1,
             child: Container(
-                width: MediaQuery.of(context).size.width * 0.85,
-                child: DrawerHeader(
-                    child: Image.network(
-                  profileDp,
-                  loadingBuilder: (BuildContext context, Widget child,
-                      ImageChunkEvent? loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: (loadingProgress.expectedTotalBytes != null)
-                            ? loadingProgress.cumulativeBytesLoaded.toDouble() /
-                                loadingProgress.expectedTotalBytes!.toDouble()
-                            : null,
-                      ),
-                    );
-                  },
-                ))),
+              width: MediaQuery.of(context).size.width * 0.85,
+              child: DrawerHeader(
+                  child: BlocBuilder<PhotoBloc, PhotoState>(
+                      cubit: BlocProvider.of<PhotoBloc>(
+                          context), // provide the local bloc instance
+                      builder: (context, state) {
+                        return Container(
+                            height: 150,
+                            width: 150,
+                            child: Image.network(profileDp, loadingBuilder:
+                                (BuildContext context, Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: (loadingProgress.expectedTotalBytes !=
+                                          null)
+                                      ? loadingProgress.cumulativeBytesLoaded
+                                              .toDouble() /
+                                          loadingProgress.expectedTotalBytes!
+                                              .toDouble()
+                                      : null,
+                                ),
+                              );
+                            }, fit: BoxFit.cover));
+                      })),
+            ),
           ),
           Expanded(
             flex: 2,
             child: ListView(children: [
               ListTile(
                 title: Text("Home"),
+                leading: Icon(Icons.home_filled),
                 onTap: () {
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
-                title: Text("Home"),
+                title: Text("Update Profile"),
+                leading: Icon(Icons.person),
                 onTap: () {
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
-                title: Text("Home"),
+                title: Text("Notifications"),
+                leading: Icon(Icons.notifications),
                 onTap: () {
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
-                title: Text("Home"),
+                title: Text("Settings"),
+                leading: Icon(Icons.settings),
                 onTap: () {
                   Navigator.of(context).pop();
                 },
               ),
-              ListTile(
-                title: Text("Home"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                title: Text("Home"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                title: Text("Home"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                title: Text("Home"),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              )
             ]),
           )
         ],
@@ -181,6 +151,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
     BackButtonInterceptor.add(myInterceptor);
     WidgetsBinding.instance!.addPostFrameCallback((_) => loadData());
   }
@@ -258,6 +229,7 @@ class _HomePageState extends State<HomePage> {
                                         // profileDp = null;
                                         final User? user =
                                             await _auth.currentUser;
+
                                         googleHomePageUserSignIn.signOut();
                                         if (user != null) {
                                           await _auth.signOut();
@@ -267,6 +239,7 @@ class _HomePageState extends State<HomePage> {
                                             content: Text(email! +
                                                 ' has successfully signed out.'),
                                           ));
+
                                           Navigator.pushAndRemoveUntil(
                                               context,
                                               MaterialPageRoute(
@@ -367,51 +340,55 @@ class _HomePageState extends State<HomePage> {
           ),
           Padding(
               padding: EdgeInsets.only(top: 20, left: 30, right: 30),
-              child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.blue[100]),
-                  width: MediaQuery.of(context).size.width / 1.3,
-                  height: 150,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width / 0.7,
-                    child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(width: size.width / 30),
-                              Text(
-                                "Complete my profile",
-                                style: TextStyle(
-                                    fontFamily: 'VisbyRoundCF',
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(width: size.width / 30),
-                              ElevatedButton(
-                                  style: ButtonStyle(
-                                      minimumSize: MaterialStateProperty.all(
-                                          Size(80, 40)),
-                                      shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(18.0),
-                                              side: BorderSide(
-                                                  color: Colors.blue))),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.blue),
-                                      elevation: MaterialStateProperty.all(10)),
-                                  // color: Colors.blue[400],
-                                  // elevation: 10,
-                                  child: Text("Go"),
-                                  onPressed: () =>
-                                      {Navigator.pushNamed(context, '/createprofile')}),
-                              SizedBox(width: size.width / 30),
-                            ])),
-                  )))
+              child: (flag == true)
+                  ? Text("Hi $firstName")
+                  : Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.blue[100]),
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      height: 150,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 0.7,
+                        child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(width: size.width / 30),
+                                  Text(
+                                    "Complete my profile",
+                                    style: TextStyle(
+                                        fontFamily: 'VisbyRoundCF',
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(width: size.width / 30),
+                                  ElevatedButton(
+                                      style: ButtonStyle(
+                                          minimumSize: MaterialStateProperty.all(
+                                              Size(80, 40)),
+                                          shape:
+                                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              18.0),
+                                                      side: BorderSide(
+                                                          color: Colors.blue))),
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.blue),
+                                          elevation:
+                                              MaterialStateProperty.all(10)),
+                                      // color: Colors.blue[400],
+                                      // elevation: 10,
+                                      child: Text("Go"),
+                                      onPressed: () =>
+                                          {Navigator.pushNamed(context, '/createprofile')}),
+                                  SizedBox(width: size.width / 30),
+                                ])),
+                      )))
         ])),
       );
     }));

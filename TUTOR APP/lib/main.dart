@@ -2,12 +2,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:tutorapp/addprofileimage.dart';
 import 'package:tutorapp/createprofilepage.dart';
 import 'package:tutorapp/homepage.dart';
 import 'package:tutorapp/prothomPage.dart';
+import 'package:tutorapp/routes/generate_routes.dart';
+import 'package:tutorapp/routes/route_names.dart';
+
+import 'bloc/photo_bloc.dart';
 
 class CommonThings {
   static Size size;
@@ -33,29 +38,33 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            fontFamily: 'VisbyRoundCF-Medium',
-            primaryColor: Colors.blue[900],
-            backgroundColor: Colors.lightBlueAccent,
-          ),
-          title: 'TUTOR HUB',
-          home: IntroScreen(),
-          routes: {
-            // When navigating to the "/second" route, build the SecondScreen widget.
-            '/home': (context) => HomePage(),
-            '/createprofile': (context) => CreateProfilePage(),
-            '/addprofileimage': (context) => AddProfileImage()
-          },
-        ));
+    return BlocProvider(
+        create: (_) => PhotoBloc(),
+        child: GestureDetector(
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+            },
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                fontFamily: 'VisbyRoundCF-Medium',
+                primaryColor: Colors.blue[900],
+                backgroundColor: Colors.lightBlueAccent,
+              ),
+              title: 'TUTOR HUB',
+              home: IntroScreen(),
+              // initialRoute: routeHome,
+              // onGenerateRoute: RouteGenerator.generateRoute,
+              routes: {
+                // When navigating to the "/second" route, build the SecondScreen widget.
+                '/home': (context) => HomePage(),
+                '/createprofile': (context) => CreateProfilePage(),
+                '/addprofileimage': (context) => AddProfileImage()
+              },
+            )));
   }
 }
 

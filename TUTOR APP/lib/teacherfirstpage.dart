@@ -392,9 +392,9 @@ class _TeacherFirstPageState extends State<TeacherFirstPage> {
                         print(
                             "======================$currentUserId==================");
                         _callCreateTeacherApi(temp_teacher);
-                        if (temp_teacher.validator()) {
-                          flag = true;
-                        }
+                        // if (temp_teacher.validator()) {
+                        //   flag = true;
+                        // }
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(builder: (context) => HomePage()),

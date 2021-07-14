@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tutorapp/prothomPage.dart';
+import 'package:tutorapp/routes/route_names.dart';
 import 'dart:io';
 import 'addprofileimage.dart';
+import 'bloc/photo_bloc.dart';
 import 'homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -79,6 +82,20 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
 
   String imageUrl = '';
   String profileImageUrl = '';
+  late File _image;
+  final picker = ImagePicker();
+
+  Future selectOrTakePhoto(ImageSource imageSource) async {
+    final pickedFile = await picker.getImage(source: imageSource);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        Navigator.pushNamed(context, routeEdit, arguments: _image);
+      } else
+        print('No photo was selected or taken');
+    });
+  }
 
   uploadImage() async {
     final _firebaseStorage = FirebaseStorage.instance;
@@ -87,8 +104,22 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
     await Permission.photos.request();
     var permissionStatus = await Permission.photos.status;
     if (permissionStatus.isGranted) {
+      SimpleDialogOption(
+        child: Text('From gallery'),
+        onPressed: () {
+          selectOrTakePhoto(ImageSource.gallery);
+          Navigator.pop(context);
+        },
+      );
+      SimpleDialogOption(
+        child: Text('Take a photo'),
+        onPressed: () {
+          selectOrTakePhoto(ImageSource.camera);
+          Navigator.pop(context);
+        },
+      );
       //Select Image
-      image = await _imagePicker.getImage(source: ImageSource.gallery);
+      // image = await _imagePicker.getImage(source: ImageSource.gallery);
       var file = File(image!.path);
       if (image != null) {
         //Upload to Firebase
@@ -140,33 +171,66 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                      width: MediaQuery.of(context).size.width / 1.7,
-                      height: MediaQuery.of(context).size.width / 1.7,
-                      margin: EdgeInsets.only(
-                          top: 30, bottom: 20, left: 20, right: 20),
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15),
-                        ),
-                        // border: Border.all(color: Colors.white),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(2, 2),
-                            spreadRadius: 2,
-                            blurRadius: 1,
-                          ),
-                        ],
+                    width: MediaQuery.of(context).size.width / 1.7,
+                    height: MediaQuery.of(context).size.width / 1.7,
+                    margin: EdgeInsets.only(
+                        top: 30, bottom: 20, left: 20, right: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
                       ),
-                      child: Center(
-                          child: Image.network(profileDp, fit: BoxFit.cover))),
+                      // border: Border.all(color: Colors.white),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          offset: Offset(2, 2),
+                          spreadRadius: 2,
+                          blurRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: BlocBuilder<PhotoBloc, PhotoState>(
+                      cubit: BlocProvider.of<PhotoBloc>(
+                          context), // provide the local bloc instance
+                      builder: (context, state) {
+                        return Container(
+                            height: 150,
+                            width: 150,
+                            child: Image.network(profileDp, loadingBuilder:
+                                (BuildContext context, Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: (loadingProgress.expectedTotalBytes !=
+                                          null)
+                                      ? loadingProgress.cumulativeBytesLoaded
+                                              .toDouble() /
+                                          loadingProgress.expectedTotalBytes!
+                                              .toDouble()
+                                      : null,
+                                ),
+                              );
+                            }, fit: BoxFit.cover));
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 50),
+                  Text(
+                    'Please select your profile photo',
+                    style: TextStyle(fontSize: 22),
+                  ),
+                  // child: Center(
+                  //     child: Image.network(profileDp, fit: BoxFit.cover))),
                   Center(
                       child: FloatingActionButton(
                           child: const Icon(Icons.photo_camera),
                           backgroundColor: Colors.blue,
                           onPressed: () {
-                            uploadImage();
+                            _showSelectionDialog();
+
+                            // uploadImage();
                           })),
                   Padding(
                       padding: EdgeInsets.only(left: 50, right: 50, bottom: 10),
@@ -257,9 +321,10 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
                           print(
                               "======================$currentUserId==================");
                           _callCreateStudentApi(temp_student);
-                          if (temp_student.validator()) {
-                            flag = true;
-                          }
+                          getStudentNameApi(currentUserId);
+                          // if (temp_student.validator()) {
+                          //   flag = true;
+                          // }
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(builder: (context) => HomePage()),
@@ -284,5 +349,30 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
             )),
           );
         }));
+  }
+
+  Future _showSelectionDialog() async {
+    await showDialog(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        title: Text('Select photo'),
+        children: <Widget>[
+          SimpleDialogOption(
+            child: Text('From gallery'),
+            onPressed: () {
+              selectOrTakePhoto(ImageSource.gallery);
+              Navigator.pop(context);
+            },
+          ),
+          SimpleDialogOption(
+            child: Text('Take a photo'),
+            onPressed: () {
+              selectOrTakePhoto(ImageSource.camera);
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

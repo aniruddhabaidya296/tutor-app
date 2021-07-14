@@ -69,7 +69,6 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                 elevation: 5,
                 color: Colors.blue,
                 onPressed: () {
-                  flag = false;
                   tutorHubUser = "Teacher";
                   Navigator.push(
                       context,
@@ -101,7 +100,6 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                 elevation: 5,
                 color: Colors.blue,
                 onPressed: () {
-                  flag = false;
                   tutorHubUser = "Student";
                   Navigator.push(
                       context,

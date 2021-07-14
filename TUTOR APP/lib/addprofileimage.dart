@@ -4,7 +4,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tutorapp/createprofilepage.dart';
-import 'package:firebase_picture_uploader/firebase_picture_uploader.dart';
 import 'package:tutorapp/prothomPage.dart';
 
 class AddProfileImage extends StatefulWidget {
