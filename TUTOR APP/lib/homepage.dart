@@ -17,6 +17,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
 import 'addprofileimage.dart';
 import 'bloc/photo_bloc.dart';
+import 'chatUI/post_card.dart';
+import 'helper/demo_values.dart';
 
 var flag, firstName;
 FirebaseStorage storage = FirebaseStorage.instance;
@@ -81,29 +83,35 @@ class _HomePageState extends State<HomePage> {
             child: Container(
               width: MediaQuery.of(context).size.width * 0.85,
               child: DrawerHeader(
+                  // child: CircleAvatar(
                   child: BlocBuilder<PhotoBloc, PhotoState>(
                       cubit: BlocProvider.of<PhotoBloc>(
                           context), // provide the local bloc instance
                       builder: (context, state) {
-                        return Container(
-                            height: 150,
-                            width: 150,
-                            child: Image.network(profileDp, loadingBuilder:
-                                (BuildContext context, Widget child,
-                                    ImageChunkEvent? loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: (loadingProgress.expectedTotalBytes !=
-                                          null)
-                                      ? loadingProgress.cumulativeBytesLoaded
-                                              .toDouble() /
-                                          loadingProgress.expectedTotalBytes!
-                                              .toDouble()
-                                      : null,
-                                ),
-                              );
-                            }, fit: BoxFit.cover));
+                        // return Container(
+                        //     // clipBehavior: Clip.antiAliasWithSaveLayer,
+                        //     height: 150,
+                        //     width: 150,
+                        return CircleAvatar(
+                          backgroundImage: NetworkImage(profileDp),
+                          //   child: Image.network(profileDp,
+                          //         loadingBuilder: (BuildContext context,
+                          //             Widget child,
+                          //             ImageChunkEvent? loadingProgress) {
+                          //   if (loadingProgress == null) return child;
+                          //   return Center(
+                          //     child: CircularProgressIndicator(
+                          //       value:
+                          //           (loadingProgress.expectedTotalBytes != null)
+                          //               ? loadingProgress.cumulativeBytesLoaded
+                          //                       .toDouble() /
+                          //                   loadingProgress.expectedTotalBytes!
+                          //                       .toDouble()
+                          //               : null,
+                          //     ),
+                          //   );
+                          // }, fit: BoxFit.fill)
+                        );
                       })),
             ),
           ),
@@ -195,202 +203,215 @@ class _HomePageState extends State<HomePage> {
       }
     }, child: Builder(builder: (context) {
       return Scaffold(
-        key: _scaffoldKey,
-        drawer: returnDrawer(),
-        backgroundColor: Colors.blue[50],
-        appBar: AppBar(
-          actions: <Widget>[
-            Builder(builder: (BuildContext context) {
-              return TextButton(
-                child: Icon(
-                  Icons.logout,
+          key: _scaffoldKey,
+          drawer: returnDrawer(),
+          backgroundColor: Colors.blue[50],
+          appBar: AppBar(
+            actions: <Widget>[
+              Builder(builder: (BuildContext context) {
+                return TextButton(
+                  child: Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                  onPressed: () async {
+                    return showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                              backgroundColor: Colors.blue[100],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
+                              title: Text("Log Out"),
+                              content: Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: <Widget>[
+                                  Text("Are you sure you want to log out?"),
+                                  SizedBox(height: 60),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      ElevatedButton(
+                                        child: Text("Yes"),
+                                        onPressed: () async {
+                                          // profileDp = null;
+                                          final User? user =
+                                              await _auth.currentUser;
+
+                                          googleHomePageUserSignIn.signOut();
+                                          if (user != null) {
+                                            await _auth.signOut();
+                                            final String? email = user.email;
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content: Text(email! +
+                                                  ' has successfully signed out.'),
+                                            ));
+
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProthomPage()),
+                                                ModalRoute.withName('/'));
+                                          }
+                                        },
+                                        style: ButtonStyle(
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            18.0),
+                                                    side: BorderSide(
+                                                        color: Colors.blue))),
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.blue),
+                                            elevation:
+                                                MaterialStateProperty.all(5)),
+                                      ),
+                                      SizedBox(width: 20),
+                                      ElevatedButton(
+                                        child: Text("No"),
+                                        onPressed: () {
+                                          Navigator.of(ctx).pop();
+                                        },
+                                        style: ButtonStyle(
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            18.0),
+                                                    side: BorderSide(
+                                                        color: Colors.blue))),
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.blue),
+                                            elevation:
+                                                MaterialStateProperty.all(5)),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ));
+                  },
+                );
+              })
+            ],
+            leading: Row(
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () {
+                    _openDrawer();
+                  },
                   color: Colors.white,
                 ),
-                onPressed: () async {
-                  return showDialog(
-                      context: context,
-                      builder: (ctx) => AlertDialog(
-                            backgroundColor: Colors.blue[100],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ),
-                            title: Text("Log Out"),
-                            content: Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: <Widget>[
-                                Text("Are you sure you want to log out?"),
-                                SizedBox(height: 60),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    ElevatedButton(
-                                      child: Text("Yes"),
-                                      onPressed: () async {
-                                        // profileDp = null;
-                                        final User? user =
-                                            await _auth.currentUser;
-
-                                        googleHomePageUserSignIn.signOut();
-                                        if (user != null) {
-                                          await _auth.signOut();
-                                          final String? email = user.email;
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content: Text(email! +
-                                                ' has successfully signed out.'),
-                                          ));
-
-                                          Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProthomPage()),
-                                              ModalRoute.withName('/'));
-                                        }
-                                      },
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          18.0),
-                                                  side: BorderSide(
-                                                      color: Colors.blue))),
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.blue),
-                                          elevation:
-                                              MaterialStateProperty.all(5)),
-                                    ),
-                                    SizedBox(width: 20),
-                                    ElevatedButton(
-                                      child: Text("No"),
-                                      onPressed: () {
-                                        Navigator.of(ctx).pop();
-                                      },
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          18.0),
-                                                  side: BorderSide(
-                                                      color: Colors.blue))),
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.blue),
-                                          elevation:
-                                              MaterialStateProperty.all(5)),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ));
-                },
-              );
-            })
-          ],
-          leading: Row(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {
-                  _openDrawer();
-                },
-                color: Colors.white,
-              ),
-            ],
-          ),
-          automaticallyImplyLeading: false,
-          title: Text("Home"),
-        ),
-        body: Center(
-            child: ListView(controller: ScrollController(), children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(top: 20, left: 30, right: 30),
-            child: TextFormField(
-              cursorColor: Colors.black,
-              style: TextStyle(
-                fontFamily: 'VisbyRoundCF',
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-              decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                  borderSide: BorderSide(color: Colors.black38),
-                ),
-                labelText: "Search",
-                suffixIcon: Icon(
-                  Icons.search,
-                ),
-                hintStyle: TextStyle(
-                  color: Colors.black38,
-                  fontFamily: 'VisbyRoundCF',
-                ),
-              ),
+              ],
             ),
+            automaticallyImplyLeading: false,
+            title: Text("Home"),
           ),
-          Padding(
-              padding: EdgeInsets.only(top: 20, left: 30, right: 30),
-              child: (flag == true)
-                  ? Text("Hi $firstName")
-                  : Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.blue[100]),
-                      width: MediaQuery.of(context).size.width / 1.3,
-                      height: 150,
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width / 0.7,
-                        child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(width: size.width / 30),
-                                  Text(
-                                    "Complete my profile",
-                                    style: TextStyle(
-                                        fontFamily: 'VisbyRoundCF',
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(width: size.width / 30),
-                                  ElevatedButton(
-                                      style: ButtonStyle(
-                                          minimumSize: MaterialStateProperty.all(
-                                              Size(80, 40)),
-                                          shape:
-                                              MaterialStateProperty.all<RoundedRectangleBorder>(
+          body: Center(
+              child: SingleChildScrollView(
+            child: Column(children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 20, left: 30, right: 30),
+                child: TextFormField(
+                  cursorColor: Colors.black,
+                  style: TextStyle(
+                    fontFamily: 'VisbyRoundCF',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                      borderSide: BorderSide(color: Colors.black38),
+                    ),
+                    labelText: "Search",
+                    suffixIcon: Icon(
+                      Icons.search,
+                    ),
+                    hintStyle: TextStyle(
+                      color: Colors.black38,
+                      fontFamily: 'VisbyRoundCF',
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                  padding: EdgeInsets.only(top: 20, left: 30, right: 30),
+                  child: (flag == true)
+                      ? Text("Hi $firstName")
+                      : Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.blue[100]),
+                          width: MediaQuery.of(context).size.width / 1.2,
+                          height: 150,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width / 0.7,
+                            child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(width: size.width / 30),
+                                      Text(
+                                        "Complete my profile",
+                                        style: TextStyle(
+                                            fontFamily: 'VisbyRoundCF',
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(width: size.width / 30),
+                                      ElevatedButton(
+                                          style: ButtonStyle(
+                                              minimumSize: MaterialStateProperty.all(
+                                                  Size(80, 40)),
+                                              shape: MaterialStateProperty.all<
+                                                      RoundedRectangleBorder>(
                                                   RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               18.0),
                                                       side: BorderSide(
                                                           color: Colors.blue))),
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.blue),
-                                          elevation:
-                                              MaterialStateProperty.all(10)),
-                                      // color: Colors.blue[400],
-                                      // elevation: 10,
-                                      child: Text("Go"),
-                                      onPressed: () =>
-                                          {Navigator.pushNamed(context, '/createprofile')}),
-                                  SizedBox(width: size.width / 30),
-                                ])),
-                      )))
-        ])),
-      );
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<Color>(
+                                                      Colors.blue),
+                                              elevation: MaterialStateProperty.all(10)),
+                                          // color: Colors.blue[400],
+                                          // elevation: 10,
+                                          child: Text("Go"),
+                                          onPressed: () => {Navigator.pushNamed(context, '/createprofile')}),
+                                      SizedBox(width: size.width / 30),
+                                    ])),
+                          ))),
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                width: MediaQuery.of(context).size.width / 1.2,
+                height: 400,
+                child: ListView.builder(
+                  // addRepaintBoundaries: true,
+                  itemCount: DemoValues.posts.length,
+                  controller: ScrollController(),
+                  itemBuilder: (BuildContext container, int index) {
+                    return PostCard(postData: DemoValues.posts[index]);
+                  },
+                ),
+              ),
+            ]),
+          )));
     }));
   }
 }

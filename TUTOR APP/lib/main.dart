@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
               title: 'TUTOR HUB',
               home: IntroScreen(),
               // initialRoute: routeHome,
-              // onGenerateRoute: RouteGenerator.generateRoute,
+              onGenerateRoute: RouteGenerator.generateRoute,
               routes: {
                 // When navigating to the "/second" route, build the SecondScreen widget.
                 '/home': (context) => HomePage(),

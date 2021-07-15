@@ -68,7 +68,7 @@ flutter:
   assets:
     - assets/images/tutorhub_logo.PNG
     - assets/images/goku.png
-  
+    - assets/images/post.png
 
 # flutter_native_splash:
 #   color: "#9AFEFF"
