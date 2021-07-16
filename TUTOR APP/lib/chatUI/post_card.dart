@@ -4,6 +4,7 @@ import 'package:tutorapp/helper/demo_values.dart';
 import 'package:tutorapp/models/post_model.dart';
 import 'package:tutorapp/models/user_model.dart';
 import 'package:tutorapp/pages/post_page.dart';
+import 'package:tutorapp/presentation/themes.dart';
 import 'package:tutorapp/widgets/inherited_widgets/inherited_post_model.dart';
 import 'package:tutorapp/widgets/inherited_widgets/inherited_user_model.dart';
 
@@ -24,7 +25,7 @@ class PostCard extends StatelessWidget {
         onTap: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (BuildContext context) {
-            return PostPage();
+            return PostPage(postData: postData);
           }));
         },
         child: AspectRatio(
@@ -172,19 +173,23 @@ class _UserImage extends StatelessWidget {
   }
 }
 
-class _PostTimeStamp extends StatelessWidget {
-  const _PostTimeStamp({Key? key}) : super(key: key);
+class PostTimeStamp extends StatelessWidget {
+  final Alignment alignment;
+
+  const PostTimeStamp({
+    Key? key,
+    this.alignment = Alignment.centerLeft,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final PostModel postData = InheritedPostModel.of(context).postData;
-    final TextStyle timeTheme = TextThemes.style;
-    return Expanded(
-      flex: 2,
+    final TextStyle timeTheme = TextThemes.dateStyle;
+
+    return Container(
+      width: double.infinity,
+      alignment: alignment,
       child: Text(postData.postTimeFormatted, style: timeTheme),
     );
   }
-}
-
-class TextThemes {
-  static TextStyle style = TextStyle(fontFamily: 'Visby Round CF');
 }
