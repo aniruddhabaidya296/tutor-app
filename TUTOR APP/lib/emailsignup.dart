@@ -40,14 +40,28 @@ class _EmailSignUpState extends State<EmailSignUp> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              backgroundColor: Colors.blue[100],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+              ),
               title: Text("Error"),
               content: Text(err.message),
               actions: [
-                TextButton(
-                  child: Text("Ok"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                Padding(
+                  padding: EdgeInsets.only(right: 20, bottom: 10),
+                  child: ElevatedButton(
+                    child: Text("OK"),
+                    style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(color: Colors.blue))),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.blue),
+                        elevation: MaterialStateProperty.all(5)),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
                 )
               ],
             );

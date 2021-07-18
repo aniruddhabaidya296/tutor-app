@@ -216,11 +216,8 @@ class _StudentFirstPageState extends State<StudentFirstPage> {
                       },
                     ),
                   ),
-                  SizedBox(height: 50),
-                  Text(
-                    'Please select your profile photo',
-                    style: TextStyle(fontSize: 22),
-                  ),
+                  SizedBox(height: 20),
+
                   // child: Center(
                   //     child: Image.network(profileDp, fit: BoxFit.cover))),
                   Center(
