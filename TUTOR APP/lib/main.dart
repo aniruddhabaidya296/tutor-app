@@ -11,6 +11,7 @@ import 'package:tutorapp/homepage.dart';
 import 'package:tutorapp/prothomPage.dart';
 import 'package:tutorapp/routes/generate_routes.dart';
 import 'package:tutorapp/routes/route_names.dart';
+import 'package:tutorapp/studentfirstpage.dart';
 
 import 'bloc/photo_bloc.dart';
 
@@ -62,7 +63,8 @@ class MyApp extends StatelessWidget {
                 // When navigating to the "/second" route, build the SecondScreen widget.
                 '/home': (context) => HomePage(),
                 '/createprofile': (context) => CreateProfilePage(),
-                '/addprofileimage': (context) => AddProfileImage()
+                '/addprofileimage': (context) => AddProfileImage(),
+                '/studentfirstpage': (context) => StudentFirstPage()
               },
             )));
   }

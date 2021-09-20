@@ -26,7 +26,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
           .child('Images/$currentUserId')
           .putFile(photo);
       profileDp = await snapshot.ref.getDownloadURL();
-      yield PhotoSet(photo);
+      yield PhotoSet(profileDp);
     }
   }
 }

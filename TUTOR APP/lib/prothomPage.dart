@@ -203,18 +203,6 @@ class _ProthomPageState extends State<ProthomPage> {
     ),
   );
 
-  // void onLoading() {
-  //   setState(() {
-  //     loading = true;
-  //   });
-  // }
-
-  // void login() async {
-  //   setState(() {
-  //     loading = false;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(onTap: () {
@@ -325,15 +313,6 @@ class _ProthomPageState extends State<ProthomPage> {
                                       ),
                                     ));
                             handleSignIn();
-
-                            // onLoading();
-                            // handleLoading();
-
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => HomePage()));
-                            // login();
                           },
                           padding: EdgeInsets.only(left: 50),
                           shape: RoundedRectangleBorder(

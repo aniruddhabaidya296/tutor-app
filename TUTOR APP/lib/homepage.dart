@@ -84,37 +84,17 @@ class _HomePageState extends State<HomePage> {
               width: MediaQuery.of(context).size.width * 0.85,
               child: DrawerHeader(
                   // child: CircleAvatar(
-                  child: BlocBuilder<PhotoBloc, PhotoState>(
-                      cubit: BlocProvider.of<PhotoBloc>(
-                          context), // provide the local bloc instance
-                      builder: (context, state) {
-                        // return Container(
-                        //     // clipBehavior: Clip.antiAliasWithSaveLayer,
-                        //     height: 150,
-                        //     width: 150,
-                        return CircleAvatar(
+                  child: BlocListener<PhotoBloc, PhotoState>(
+                      listener: (context, state) {
+                        if (state is PhotoSet){
+                          profileDp=state.photo;
+                        }
+                      },
+                        child: CircleAvatar(
                           backgroundImage: NetworkImage(profileDp),
-                          //   child: Image.network(profileDp,
-                          //         loadingBuilder: (BuildContext context,
-                          //             Widget child,
-                          //             ImageChunkEvent? loadingProgress) {
-                          //   if (loadingProgress == null) return child;
-                          //   return Center(
-                          //     child: CircularProgressIndicator(
-                          //       value:
-                          //           (loadingProgress.expectedTotalBytes != null)
-                          //               ? loadingProgress.cumulativeBytesLoaded
-                          //                       .toDouble() /
-                          //                   loadingProgress.expectedTotalBytes!
-                          //                       .toDouble()
-                          //               : null,
-                          //     ),
-                          //   );
-                          // }, fit: BoxFit.fill)
-                        );
-                      })),
+                        ),),
+                      )),
             ),
-          ),
           Expanded(
             flex: 2,
             child: ListView(children: [
@@ -130,6 +110,7 @@ class _HomePageState extends State<HomePage> {
                 leading: Icon(Icons.person),
                 onTap: () {
                   Navigator.of(context).pop();
+                  Navigator.pushNamed(context, "/studentfirstpage");
                 },
               ),
               ListTile(

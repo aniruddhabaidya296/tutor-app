@@ -11,7 +11,7 @@ class PhotoInitial extends PhotoState {
 }
 
 class PhotoSet extends PhotoState {
-  final File photo;
+  final String photo;
 
   PhotoSet(this.photo) : super([photo]);
 
