@@ -1,4 +1,7 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorapp/analytics_services/analytics_servicers.dart';
 import 'package:tutorapp/chatUI/post_stats.dart';
 import 'package:tutorapp/helper/demo_values.dart';
 import 'package:tutorapp/models/post_model.dart';
@@ -14,6 +17,7 @@ bool isLandscape(BuildContext context) =>
 class PostCard extends StatelessWidget {
   // Data
   final PostModel postData;
+  
 
   // Data will be taken using the constructor
   const PostCard({Key? key, required this.postData}) : super(key: key);
@@ -23,6 +27,7 @@ class PostCard extends StatelessWidget {
 
     return GestureDetector(
         onTap: () {
+          
           Navigator.push(context,
               MaterialPageRoute(builder: (BuildContext context) {
             return PostPage(postData: postData);

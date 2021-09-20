@@ -1,4 +1,7 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorapp/analytics_services/analytics_servicers.dart';
 import 'package:tutorapp/chatUI/post_card.dart';
 import 'package:tutorapp/chatUI/post_stats.dart';
 import 'package:tutorapp/models/post_model.dart';
@@ -18,9 +21,14 @@ class PostPageKeys {
 class PostPage extends StatelessWidget {
   final PostModel postData;
   const PostPage({Key? key, required this.postData}) : super(key: key);
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   Widget build(BuildContext context) {
+    startFirebaseAnalyticsServices(
+        analytics: analytics, screenName: "PostPage");
     return Scaffold(
         appBar: AppBar(
           title: Text(postData.title),

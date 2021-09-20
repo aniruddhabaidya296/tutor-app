@@ -1,4 +1,6 @@
 // @dart=2.9
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,36 +39,43 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => PhotoBloc(),
-        child: GestureDetector(
-            onTap: () {
-              FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
-            },
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                fontFamily: 'VisbyRoundCF-Medium',
-                primaryColor: Colors.blue[900],
-                backgroundColor: Colors.lightBlueAccent,
-              ),
-              title: 'TUTOR HUB',
-              home: IntroScreen(),
-              // initialRoute: routeHome,
-              onGenerateRoute: RouteGenerator.generateRoute,
-              routes: {
-                // When navigating to the "/second" route, build the SecondScreen widget.
-                '/home': (context) => HomePage(),
-                '/createprofile': (context) => CreateProfilePage(),
-                '/addprofileimage': (context) => AddProfileImage(),
-                '/studentfirstpage': (context) => StudentFirstPage()
-              },
-            )));
+      create: (_) => PhotoBloc(),
+      child: GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: 'VisbyRoundCF-Medium',
+            primaryColor: Colors.blue[900],
+            backgroundColor: Colors.lightBlueAccent,
+          ),
+          title: 'TUTOR HUB',
+          home: IntroScreen(),
+          navigatorObservers: <NavigatorObserver>[observer],
+          // initialRoute: routeHome,
+          onGenerateRoute: RouteGenerator.generateRoute,
+          routes: {
+            // When navigating to the "/second" route, build the SecondScreen widget.
+            '/home': (context) => HomePage(),
+            '/createprofile': (context) => CreateProfilePage(),
+            '/addprofileimage': (context) => AddProfileImage(),
+            '/studentfirstpage': (context) => StudentFirstPage()
+          },
+        ),
+      ),
+    );
   }
 }
 
